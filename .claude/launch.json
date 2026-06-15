@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Python static server (port 5502)",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "5502"],
+      "port": 5502
+    },
+    {
+      "name": "npx serve (port 5501)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "5501", "."],
+      "port": 5501
+    }
+  ]
+}

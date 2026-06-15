@@ -1,0 +1,115 @@
+/* DESIGN SYSTEM (Typography & Color Palette) */
+:root {
+    /* Fonts */
+    --font-dm-sans: "DM Sans Local", "dm-sans", sans-serif;
+    --font-azeret-mono: "azeret-mono", monospace;
+    --font-seasons: "the-seasons", serif;
+
+    /* Figma Typography Variables (Converted to rem based on 16px) */
+
+    /* Body & Body Bold (DM Sans) */
+    --typo-body-font: var(--font-dm-sans);
+    --typo-body-size: 1rem; /* 16px */
+    --typo-body-height: 1.3; /* 130% */
+    --typo-body-weight: 400;
+
+    --typo-body-bold-font: var(--font-dm-sans);
+    --typo-body-bold-size: 1rem; /* 16px */
+    --typo-body-bold-height: 1.2; /* 120% */
+    --typo-body-bold-weight: 700;
+
+    /* Body Fino (DM Sans) */
+    --typo-body-fino-font: var(--font-dm-sans);
+    --typo-body-fino-size: 1rem; /* 16px */
+    --typo-body-fino-height: 1.3; /* 130% */
+    --typo-body-fino-weight: 300;
+
+    --typo-body-14-fino-font: var(--font-dm-sans);
+    --typo-body-14-fino-size: 0.875rem; /* 14px */
+    --typo-body-14-fino-height: 1.3; /* 130% */
+    --typo-body-14-fino-weight: 300;
+
+    /* Body Mayúsculas (DM Sans) */
+    --typo-body-mayus-font: var(--font-dm-sans);
+    --typo-body-mayus-size: 0.75rem; /* 12px */
+    --typo-body-mayus-height: 1.3; /* 130% */
+
+    /* Body Mayúsculas S & M (Azeret Mono) */
+    --typo-body-mayus-s-font: var(--font-azeret-mono);
+    --typo-body-mayus-s-size: 0.5625rem; /* 9px */
+    --typo-body-mayus-s-height: 1.3; /* 130% */
+
+    --typo-body-mayus-m-font: var(--font-azeret-mono);
+    --typo-body-mayus-m-size: 0.625rem; /* 10px */
+    --typo-body-mayus-m-height: 1.3; /* 130% */
+
+    /* Label & Subheader (DM Sans) */
+    --typo-label-font: var(--font-dm-sans);
+    --typo-label-size: 0.875rem; /* 14px */
+    --typo-label-height: 1.0; /* 100% */
+
+    --typo-subheader-font: var(--font-dm-sans);
+    --typo-subheader-size: 1.5rem; /* 24px */
+    --typo-subheader-height: 1.1; /* 110% */
+
+    /* Section Header & Header (The Seasons) */
+    --typo-section-header-font: var(--font-seasons);
+    --typo-section-header-size: 3rem; /* 48px */
+    --typo-section-header-height: 1.1; /* 110% */
+
+    --typo-header-font: var(--font-seasons);
+    --typo-header-size: 2rem; /* 32px */
+    --typo-header-height: 1.1; /* 110% */
+
+    /* MAYS Alta visibilidad (DM Sans) */
+    --typo-mays-alta-font: var(--font-dm-sans);
+    --typo-mays-alta-size: 1rem; /* 16px */
+    --typo-mays-alta-height: normal; /* Auto */
+
+    /* Figma Color Palette - Brand & Interface Variables */
+
+    /* Básicos (Blancos mapeados al color secundario brilloso) */
+    --color-white: #FFD7A9;
+    --color-white-35: var(--color-secondary-30);
+    --color-white-15: var(--color-secondary-15);
+    --color-black: #141414;
+    --color-black-35: rgba(20, 20, 20, 0.35);
+    --color-black-15: rgba(20, 20, 20, 0.15);
+
+    /* Jerarquía de marca principal */
+    --color-primary-15: rgba(60, 47, 45, 0.15);
+    --color-primary-30: rgba(60, 47, 45, 0.30);
+    --color-primary-50: rgba(60, 47, 45, 0.50);
+    --color-primary-50-solid: #806460;
+
+    --color-secondary: #dfbc94;
+    --color-secondary-15: rgba(223, 188, 148, 0.15);
+    --color-secondary-30: rgba(223, 188, 148, 0.30);
+    --color-secondary-50: rgba(223, 188, 148, 0.50);
+    --color-secondary-50-solid: #dfcdb9;
+
+    --color-tertiary-accent: var(--color-brand-6);
+    --color-quaternary-accent: #8a38f5;
+
+    /* Colores de Marca Extendidos */
+    --color-brand-1: #353535;
+    --color-brand-2: #24844c;
+    --color-brand-3: var(--color-brand-6); /* Unificado al rojo principal */
+    --color-brand-4: var(--color-brand-6); /* Unificado al rojo principal */
+    --color-brand-5: #0b3c58;
+    --color-brand-6: #a83625;
+    --color-brand-7: #6e34ba;
+    --color-brand-8: #517b93;
+
+    --color-literatura: #616160; /* Gris Literatura solicitado */
+
+    /* Estados de botones / Interfaz */
+    --color-status-error: var(--color-brand-6);
+    --color-status-error-bright: var(--color-brand-6);
+    --color-status-notifications: var(--color-brand-6);
+    --color-status-success: #26af5f;
+    --color-status-success-dark: #24844c;
+    --color-status-success-bright: #2cd271;
+    --color-status-warning: #eeb400;
+    --color-status-disabled: #616160;
+}
