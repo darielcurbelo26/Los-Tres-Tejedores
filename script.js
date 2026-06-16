@@ -216,8 +216,8 @@ function buildMasterTimeline() {
     .to(".fourth-section", { opacity: 1, duration: 0.3 })
     .to(".fourth-section .bg-stroke-text-svg", {
         attr: { "stroke-dashoffset": 0 },
-        duration: 4,          // textos de fondo se construyen más lento
-        stagger: 0.35,
+        duration: 8,          // textos de fondo se construyen más lento
+        stagger: 1,
         ease: "power2.out"
     })
     .to({}, { duration: 0.8 }) // arcos + textos visibles juntos
@@ -322,7 +322,7 @@ function buildMapCrearTimeline() {
     
     // FASE Crear 2: textos de fondo (t=43.2 -> 47.2)
     .to(".bg-words-crear .bg-stroke-dark-svg", {
-        attr: { "stroke-dashoffset": 0 }, duration: 4, stagger: 0.5, ease: "power2.out"
+        attr: { "stroke-dashoffset": 0 }, duration: 8, stagger: 1, ease: "power2.out"
     }, 43.2)
     
     // FASE Crear 3: rellenar "Crear" (t=47.2 -> 49.2)
@@ -684,20 +684,10 @@ function initIntroSequence() {
                     if (introScreen) introScreen.remove();
 
                     // Arrancar el resto del sitio
+                    // El masterTimeline controla .fixed-bottom-title desde el inicio (línea ~139)
+                    // No lo animamos aquí para evitar conflicto de timelines
                     initAll();
                 }
-            });
-
-            // Animar el título "Los Tres Tejedores" desde el centro hacia su posición y tamaño por defecto en el pie de página
-            gsap.to(".fixed-bottom-title", {
-                xPercent: -50.85, // Mantener centrado durante la animación
-                y: 0,
-                yPercent: 0,
-                fontSize: "12cqw", // tamaño por defecto de la web (12cqw)
-                zIndex: 1000,
-                duration: 1.2,
-                ease: "power2.inOut",
-                clearProps: "transform,fontSize,zIndex" // limpiar estilos en línea al terminar para que funcione el CSS original
             });
         });
     }
