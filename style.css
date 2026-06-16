@@ -441,11 +441,8 @@ body {
     z-index: -999 !important;
     pointer-events: none;
     opacity: 0.2; /* Opacidad baja por defecto para el slider */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    /* El espaciado entre palabras se controla con el atributo y de cada <text> en el SVG,
+       no con gap (que solo aplica a hijos directos del flex, y aquí solo hay un <svg>) */
 }
 
 
@@ -692,6 +689,7 @@ body {
     --bg-stroke-opacity: 0.4;               /* opacidad de textos y arcos de fondo */
     --bg-stroke-color: var(--color-secondary); /* color de trazo de textos y arcos de fondo */
     --bg-text-size: 340px;                  /* tamaño de los textos gigantes (viewBox 1000x600) */
+    --crear-arch-opacity: 0.4;              /* opacidad específica de los arcos de la sección Crear */
 
     /* ---- TÍTULOS PRINCIPALES de sección (Rol, Descargar app...) ---- */
     /* Base común a todos los títulos de trazo (.stroke-title-svg) */
@@ -732,7 +730,9 @@ body {
 /* La sección Crear tiene textos de fondo a opacidad total */
 .bg-words-crear {
     opacity: 1 !important;
-    z-index: -1 !important;
+    /* z-index: 0 → pinta después de solid-red-arch (anterior en DOM) pero antes
+       de center-card-wrapper y side-arches (posteriores en DOM, mismo nivel) */
+    z-index: 0 !important;
 }
 
 /* Animación de relleno para la palabra "Crear" (Sexta sección) */
@@ -1386,6 +1386,7 @@ body {
 /* Arcos blancos al frente */
 .arches-crear-bg svg path {
     stroke: var(--color-white) !important;
+    opacity: var(--crear-arch-opacity) !important;
 }
 
 /* Modificador oscuro para los textos de fondo en la sección crear */

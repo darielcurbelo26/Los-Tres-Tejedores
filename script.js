@@ -133,7 +133,7 @@ function buildMasterTimeline() {
     .to(".second-section", { opacity: 1, duration: 0.3 }, "cine_in")
     .fromTo(".cinema-bar-top", { yPercent: -100 }, { yPercent: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
     .fromTo(".cinema-bar-bottom", { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
-    .to(".bg-slider", { filter: "brightness(0.5)", duration: 1.2, ease: "power3.inOut" }, "cine_in")
+    .to(".bg-slider", { filter: "brightness(0.7)", duration: 1.2, ease: "power3.inOut" }, "cine_in")
     // La cabecera se desliza hacia ARRIBA y la frase inferior hacia ABAJO (suave, sin saltos)
     .to(".app-header", { yPercent: -100, opacity: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
     .to(".fixed-bottom-title", { yPercent: 100, opacity: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
