@@ -6,31 +6,31 @@
 window.birdProxy = {
     // Pájaro Principal (Centro)
     b1_x: 0,
-    b1_y: -150,
+    b1_y: 0,
     b1_z: 0, // Perspectiva/Profundidad
-    b1_overrideRotX: 9999, // 9999 significa automático (sigue al ratón). Cambia a otro valor para fijarlo.
-    b1_overrideRotY: 9999, // eje vertical (pitch/cabeceo)
-    b1_overrideRotZ: 9999, // eje profundidad (roll/giro)
+    b1_overrideRotX: 0, // 9999 significa automático (sigue al ratón). Cambia a otro valor para fijarlo.
+    b1_overrideRotY: 0, // eje vertical (pitch/cabeceo)
+    b1_overrideRotZ: 0, // eje profundidad (roll/giro)
     b1_scale: 0.85,
     b1_wingsAmp: 16.0,
 
     // Pájaro Izquierdo
     b2_x: -500,
     b2_y: 100,
-    b2_z: -30,
-    b2_overrideRotX: 9999, // eje horizontal (yaw/guiñada)
-    b2_overrideRotY: 9999,
-    b2_overrideRotZ: 9999,
+    b2_z: -40,
+    b2_overrideRotX: 0, // eje horizontal (yaw/guiñada)
+    b2_overrideRotY: 0,
+    b2_overrideRotZ: 0,
     b2_scale: 0.55,
     b2_wingsAmp: 13.0,
 
     // Pájaro Derecho
     b3_x: 500,
     b3_y: 200,
-    b3_z: 30,
-    b3_overrideRotX: 9999,
-    b3_overrideRotY: 9999,
-    b3_overrideRotZ: 9999,
+    b3_z: 40,
+    b3_overrideRotX: 0,
+    b3_overrideRotY: 0,
+    b3_overrideRotZ: 0,
     b3_scale: 0.65,
     b3_wingsAmp: 18.0,
 
@@ -51,30 +51,30 @@ window.introBirdConfig = {
     initial: {
         b1_x: 0,
         b1_y: 0,
-        b1_z: -180,
+        b1_z: 180,
         b1_scale: 0.0,
-        b1_overrideRotX: 9999,
-        b1_overrideRotY: 9999,
-        b1_overrideRotZ: 9999,
+        b1_overrideRotX: 0,
+        b1_overrideRotY: 10,
+        b1_overrideRotZ: 0,
 
         b2_x: -500,
-        b2_y: -600,
+        b2_y: 600,
         b2_z: -200,
         b2_scale: 0.0,
-        b2_overrideRotX: 9999,
-        b2_overrideRotY: 9999,
-        b2_overrideRotZ: 9999,
+        b2_overrideRotX: 0,
+        b2_overrideRotY: 10,
+        b2_overrideRotZ: 0,
 
         b3_x: 500,
         b3_y: -600,
         b3_z: -200,
         b3_scale: 0.0,
-        b3_overrideRotX: 9999,
-        b3_overrideRotY: 9999,
-        b3_overrideRotZ: 9999,
+        b3_overrideRotX: 0,
+        b3_overrideRotY: 0,
+        b3_overrideRotZ: 0,
 
-        decompose: 1.0,
-        rotationY: 0,
+        decompose: 5.0,
+        rotationY: 1.34,
         rotationX: 0,
         rotationZ: 0
     },
@@ -83,7 +83,7 @@ window.introBirdConfig = {
     final: {
         b1: {
             x: 0,
-            y: 50,
+            y: 10,
             z: 0,
             scale: 1
         },
@@ -108,6 +108,33 @@ window.introBirdConfig = {
         b3_start: 1.0, // Pájaro 3 empieza en t=1.0s
         duration: 4.5 // Duración de cada animación
     }
+};
+
+/* =========================================
+   CONFIGURACIÓN DEL MODELO 3D TELLUS (Modificable en tiempo real)
+   ========================================= */
+window.tellusProxy = {
+    // Posición del modelo
+    t_x: 0,
+    t_y: 0,
+    t_z: 0,
+
+    // Escala del modelo
+    t_scale: 150,
+
+    // Rotación (inicial + seguimiento del ratón)
+    t_rotX: 0.3,      // Rotación X inicial
+    t_rotY: 0.5,      // Rotación Y inicial
+    t_mouseFollow: 1.0, // 0-1: intensidad del seguimiento del ratón
+
+    // Opacidad y visibilidad
+    t_opacity: 1.0,
+
+    // Intensidad de luces
+    t_ambientIntensity: 1.2,
+    t_directionalIntensity: 1.0,
+    t_fillIntensity: 0.5,
+    t_pointIntensity: 0.8
 };
 
 let birdViewer = null;

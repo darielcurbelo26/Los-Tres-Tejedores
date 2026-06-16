@@ -10,13 +10,12 @@ window.TellusModelViewer = class TellusModelViewer {
         this.camera = null;
         this.renderer = null;
         this.model = null;
+        this.lights = {};
         this.clock = new THREE.Clock();
 
         // Valores para interacción con ratón
         this.mouseX = 0;
         this.mouseY = 0;
-        this.targetRotationX = 0;
-        this.targetRotationY = 0;
 
         // Valores de animación por scroll
         this.scrollProgress = 0;
@@ -43,26 +42,8 @@ window.TellusModelViewer = class TellusModelViewer {
         this.renderer.tone = THREE.LinearToneMapping;
         this.container.appendChild(this.renderer.domElement);
 
-        // 4. Luces múltiples para mejor visibilidad
-        // Luz ambiental fuerte
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
-        this.scene.add(ambientLight);
-
-        // Luz direccional principal
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-        directionalLight.position.set(200, 200, 200);
-        directionalLight.castShadow = true;
-        this.scene.add(directionalLight);
-
-        // Luz de relleno desde otro ángulo
-        const fillLight = new THREE.DirectionalLight(0x88ccff, 0.5);
-        fillLight.position.set(-200, 100, -200);
-        this.scene.add(fillLight);
-
-        // Luz puntual para mayor brillo
-        const pointLight = new THREE.PointLight(0xffffff, 0.8, 1000);
-        pointLight.position.set(0, 100, 150);
-        this.scene.add(pointLight);
+        // 4. Crear luces (referencias para actualizar en tiempo real)
+        this.setupLights();
 
         // 5. Cargar modelo
         this.loadModel();
@@ -74,6 +55,28 @@ window.TellusModelViewer = class TellusModelViewer {
         this.animate();
     }
 
+    setupLights() {
+        // Luz ambiental
+        this.lights.ambient = new THREE.AmbientLight(0xffffff, 1.2);
+        this.scene.add(this.lights.ambient);
+
+        // Luz direccional principal
+        this.lights.directional = new THREE.DirectionalLight(0xffffff, 1.0);
+        this.lights.directional.position.set(200, 200, 200);
+        this.lights.directional.castShadow = true;
+        this.scene.add(this.lights.directional);
+
+        // Luz de relleno desde otro ángulo
+        this.lights.fill = new THREE.DirectionalLight(0x88ccff, 0.5);
+        this.lights.fill.position.set(-200, 100, -200);
+        this.scene.add(this.lights.fill);
+
+        // Luz puntual para mayor brillo
+        this.lights.point = new THREE.PointLight(0xffffff, 0.8, 1000);
+        this.lights.point.position.set(0, 100, 150);
+        this.scene.add(this.lights.point);
+    }
+
     loadModel() {
         const loader = new THREE.GLTFLoader();
         const modelPath = '3DModel/Modelos3D/tellus 3d.glb';
@@ -82,15 +85,6 @@ window.TellusModelViewer = class TellusModelViewer {
             modelPath,
             (gltf) => {
                 this.model = gltf.scene;
-
-                // Aumentar escala significativamente (100-200x)
-                const scale = 150;
-                this.model.scale.set(scale, scale, scale);
-                this.model.position.set(0, 0, 0);
-
-                // Rotación inicial para mejor visibilidad
-                this.model.rotation.x = 0.3;
-                this.model.rotation.y = 0.5;
 
                 // Configurar materiales para que sean más visibles
                 this.model.traverse((node) => {
@@ -109,7 +103,7 @@ window.TellusModelViewer = class TellusModelViewer {
                 });
 
                 this.scene.add(this.model);
-                console.log('Modelo Tellus cargado exitosamente con escala:', scale);
+                console.log('Modelo Tellus cargado exitosamente');
             },
             (progress) => {
                 const percentComplete = (progress.loaded / progress.total) * 100;
@@ -144,32 +138,66 @@ window.TellusModelViewer = class TellusModelViewer {
         this.renderer.setSize(width, height);
     }
 
+    updateFromProxy() {
+        const proxy = window.tellusProxy;
+        if (!proxy || !this.model) return;
+
+        // Actualizar posición
+        this.model.position.x = proxy.t_x;
+        this.model.position.y = proxy.t_y;
+        this.model.position.z = proxy.t_z;
+
+        // Actualizar escala
+        this.model.scale.set(proxy.t_scale, proxy.t_scale, proxy.t_scale);
+
+        // Actualizar rotación inicial
+        this.model.rotation.x = proxy.t_rotX;
+        this.model.rotation.y = proxy.t_rotY;
+
+        // Actualizar luces
+        if (this.lights.ambient) this.lights.ambient.intensity = proxy.t_ambientIntensity;
+        if (this.lights.directional) this.lights.directional.intensity = proxy.t_directionalIntensity;
+        if (this.lights.fill) this.lights.fill.intensity = proxy.t_fillIntensity;
+        if (this.lights.point) this.lights.point.intensity = proxy.t_pointIntensity;
+
+        // Actualizar opacidad
+        this.model.traverse((node) => {
+            if (node.isMesh && node.material) {
+                node.material.opacity = proxy.t_opacity;
+                node.material.transparent = true;
+            }
+        });
+    }
+
     animate() {
         requestAnimationFrame(() => this.animate());
 
-        if (this.model) {
-            // Rotación suavizada siguiendo el cursor (Lerp)
-            this.targetRotationX = this.mouseY * (Math.PI / 8);
-            this.targetRotationY = this.mouseX * (Math.PI / 8);
+        // Leer parámetros de tellusProxy en tiempo real
+        this.updateFromProxy();
 
-            this.model.rotation.x += (this.targetRotationX - this.model.rotation.x) * 0.05;
-            this.model.rotation.y += (this.targetRotationY - this.model.rotation.y) * 0.05;
+        const proxy = window.tellusProxy;
+        if (this.model && proxy) {
+            // Rotación suavizada siguiendo el cursor (Lerp) con intensidad configurable
+            const mouseFollowIntensity = proxy.t_mouseFollow || 1.0;
+            const targetRotationX = this.mouseY * (Math.PI / 8) * mouseFollowIntensity;
+            const targetRotationY = this.mouseX * (Math.PI / 8) * mouseFollowIntensity;
+
+            this.model.rotation.x += (targetRotationX - this.model.rotation.x) * 0.05;
+            this.model.rotation.y += (targetRotationY - this.model.rotation.y) * 0.05;
 
             // Aplicar dispersión física al scroll (similar al shader guide)
             const dispersalStrength = Math.pow(this.scrollProgress, 3.0) * 0.3;
 
-            // Modificar escala y opacidad según el scroll
+            // Modificar escala según el scroll (pero mantener la escala base de proxy)
             if (this.scrollProgress > 0) {
-                this.model.scale.set(
-                    1 - dispersalStrength * 0.5,
-                    1 - dispersalStrength * 0.5,
-                    1 - dispersalStrength * 0.5
-                );
+                const baseScale = proxy.t_scale;
+                const scrolledScale = baseScale * (1 - dispersalStrength * 0.5);
+                this.model.scale.set(scrolledScale, scrolledScale, scrolledScale);
 
                 // Reducir opacidad
                 this.model.traverse((node) => {
                     if (node.isMesh && node.material) {
-                        node.material.opacity = 1.0 - this.scrollProgress;
+                        node.material.opacity = proxy.t_opacity * (1.0 - this.scrollProgress);
                         node.material.transparent = true;
                     }
                 });
