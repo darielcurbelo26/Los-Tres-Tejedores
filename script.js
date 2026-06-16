@@ -1019,21 +1019,18 @@ function initIntroSequence() {
     const cfg = window.introBirdConfig;
 
     // Entrada escalonada: solo animamos x, y, z, scale.
-    // Las rotaciones están en 9999 → BirdFlock las lerps solo, sin interferencia GSAP.
+    // Las rotaciones se mantienen en 9999 → BirdFlock las interpola automáticamente sin saltos.
     introTl
         .to(window.birdProxy, {
             b1_x: cfg.final.b1.x, b1_y: cfg.final.b1.y, b1_z: cfg.final.b1.z, b1_scale: cfg.final.b1.scale,
-            b1_overrideRotX: cfg.final.b1.rotX, b1_overrideRotY: cfg.final.b1.rotY, b1_overrideRotZ: cfg.final.b1.rotZ,
             duration: cfg.timings.duration, ease: "power2.out"
         }, cfg.timings.b1_start)
         .to(window.birdProxy, {
             b2_x: cfg.final.b2.x, b2_y: cfg.final.b2.y, b2_z: cfg.final.b2.z, b2_scale: cfg.final.b2.scale,
-            b2_overrideRotX: cfg.final.b2.rotX, b2_overrideRotY: cfg.final.b2.rotY, b2_overrideRotZ: cfg.final.b2.rotZ,
             duration: cfg.timings.duration, ease: "power2.out"
         }, cfg.timings.b2_start)
         .to(window.birdProxy, {
             b3_x: cfg.final.b3.x, b3_y: cfg.final.b3.y, b3_z: cfg.final.b3.z, b3_scale: cfg.final.b3.scale,
-            b3_overrideRotX: cfg.final.b3.rotX, b3_overrideRotY: cfg.final.b3.rotY, b3_overrideRotZ: cfg.final.b3.rotZ,
             duration: cfg.timings.duration, ease: "power2.out"
         }, cfg.timings.b3_start)
         .to("#btn-intro-enter", {
