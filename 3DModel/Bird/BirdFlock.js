@@ -385,23 +385,29 @@ window.BirdViewer = class BirdViewer {
             
             // Apply GSAP animation proxy values if available
             if (window.birdProxy) {
-                // Bird 1 Overrides
-                if (window.birdProxy.b1_overrideRotY !== 9999) this.birds[0].userData.overrideRotY = window.birdProxy.b1_overrideRotY;
-                else this.birds[0].userData.overrideRotY = undefined;
+                // Bird 1 Overrides (Pájaro 1 - Parámetros completamente independientes)
                 if (window.birdProxy.b1_overrideRotX !== 9999) this.birds[0].userData.overrideRotX = window.birdProxy.b1_overrideRotX;
                 else this.birds[0].userData.overrideRotX = undefined;
+                if (window.birdProxy.b1_overrideRotY !== 9999) this.birds[0].userData.overrideRotY = window.birdProxy.b1_overrideRotY;
+                else this.birds[0].userData.overrideRotY = undefined;
+                if (window.birdProxy.b1_overrideRotZ !== 9999) this.birds[0].userData.overrideRotZ = window.birdProxy.b1_overrideRotZ;
+                else this.birds[0].userData.overrideRotZ = undefined;
 
-                // Bird 2 Overrides
-                if (window.birdProxy.b2_overrideRotY !== 9999) this.birds[1].userData.overrideRotY = window.birdProxy.b2_overrideRotY;
-                else this.birds[1].userData.overrideRotY = undefined;
+                // Bird 2 Overrides (Pájaro 2 - Parámetros completamente independientes)
                 if (window.birdProxy.b2_overrideRotX !== 9999) this.birds[1].userData.overrideRotX = window.birdProxy.b2_overrideRotX;
                 else this.birds[1].userData.overrideRotX = undefined;
+                if (window.birdProxy.b2_overrideRotY !== 9999) this.birds[1].userData.overrideRotY = window.birdProxy.b2_overrideRotY;
+                else this.birds[1].userData.overrideRotY = undefined;
+                if (window.birdProxy.b2_overrideRotZ !== 9999) this.birds[1].userData.overrideRotZ = window.birdProxy.b2_overrideRotZ;
+                else this.birds[1].userData.overrideRotZ = undefined;
 
-                // Bird 3 Overrides
-                if (window.birdProxy.b3_overrideRotY !== 9999) this.birds[2].userData.overrideRotY = window.birdProxy.b3_overrideRotY;
-                else this.birds[2].userData.overrideRotY = undefined;
+                // Bird 3 Overrides (Pájaro 3 - Parámetros completamente independientes)
                 if (window.birdProxy.b3_overrideRotX !== 9999) this.birds[2].userData.overrideRotX = window.birdProxy.b3_overrideRotX;
                 else this.birds[2].userData.overrideRotX = undefined;
+                if (window.birdProxy.b3_overrideRotY !== 9999) this.birds[2].userData.overrideRotY = window.birdProxy.b3_overrideRotY;
+                else this.birds[2].userData.overrideRotY = undefined;
+                if (window.birdProxy.b3_overrideRotZ !== 9999) this.birds[2].userData.overrideRotZ = window.birdProxy.b3_overrideRotZ;
+                else this.birds[2].userData.overrideRotZ = undefined;
 
                 if (window.birdProxy.decompose !== undefined) {
                     this.birds.forEach(bird => {
@@ -434,11 +440,13 @@ window.BirdViewer = class BirdViewer {
                 const mouseInfluenceX = window.isIntroActive ? 0 : this.mouseX * 0.5;
                 const mouseInfluenceY = window.isIntroActive ? 0 : -this.mouseY * 0.3;
 
-                const targetRotY = bird.userData.overrideRotY !== undefined ? bird.userData.overrideRotY : bird.userData.baseRotY + boomerangY + mouseInfluenceX;
                 const targetRotX = bird.userData.overrideRotX !== undefined ? bird.userData.overrideRotX : bird.userData.baseRotX + boomerangX + mouseInfluenceY;
-                
-                bird.rotation.y += (targetRotY - bird.rotation.y) * 0.03;
+                const targetRotY = bird.userData.overrideRotY !== undefined ? bird.userData.overrideRotY : bird.userData.baseRotY + boomerangY + mouseInfluenceX;
+                const targetRotZ = bird.userData.overrideRotZ !== undefined ? bird.userData.overrideRotZ : 0;
+
                 bird.rotation.x += (targetRotX - bird.rotation.x) * 0.03;
+                bird.rotation.y += (targetRotY - bird.rotation.y) * 0.03;
+                bird.rotation.z += (targetRotZ - bird.rotation.z) * 0.03;
 
                 // Organic 3D drifting
                 const driftX = Math.sin(rotTime * 0.5) * 15.0;
