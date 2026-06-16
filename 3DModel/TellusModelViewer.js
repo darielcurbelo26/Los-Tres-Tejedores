@@ -16,9 +16,15 @@ window.TellusModelViewer = class TellusModelViewer {
         // Valores para interacción con ratón
         this.mouseX = 0;
         this.mouseY = 0;
+        this.currentMouseRotX = 0;
+        this.currentMouseRotY = 0;
 
         // Valores de animación por scroll
         this.scrollProgress = 0;
+
+        // Guardar rotación inicial
+        this.baseRotX = 0.3;
+        this.baseRotY = 0.5;
 
         this.init();
     }
@@ -150,9 +156,9 @@ window.TellusModelViewer = class TellusModelViewer {
         // Actualizar escala
         this.model.scale.set(proxy.t_scale, proxy.t_scale, proxy.t_scale);
 
-        // Actualizar rotación inicial
-        this.model.rotation.x = proxy.t_rotX;
-        this.model.rotation.y = proxy.t_rotY;
+        // Guardar rotación inicial (base)
+        this.baseRotX = proxy.t_rotX;
+        this.baseRotY = proxy.t_rotY;
 
         // Actualizar luces
         if (this.lights.ambient) this.lights.ambient.intensity = proxy.t_ambientIntensity;
@@ -179,11 +185,16 @@ window.TellusModelViewer = class TellusModelViewer {
         if (this.model && proxy) {
             // Rotación suavizada siguiendo el cursor (Lerp) con intensidad configurable
             const mouseFollowIntensity = proxy.t_mouseFollow || 1.0;
-            const targetRotationX = this.mouseY * (Math.PI / 8) * mouseFollowIntensity;
-            const targetRotationY = this.mouseX * (Math.PI / 8) * mouseFollowIntensity;
+            const targetMouseRotX = this.mouseY * (Math.PI / 8) * mouseFollowIntensity;
+            const targetMouseRotY = this.mouseX * (Math.PI / 8) * mouseFollowIntensity;
 
-            this.model.rotation.x += (targetRotationX - this.model.rotation.x) * 0.05;
-            this.model.rotation.y += (targetRotationY - this.model.rotation.y) * 0.05;
+            // Interpolar solo la rotación del ratón (no la base)
+            this.currentMouseRotX += (targetMouseRotX - this.currentMouseRotX) * 0.05;
+            this.currentMouseRotY += (targetMouseRotY - this.currentMouseRotY) * 0.05;
+
+            // Aplicar rotación = base + rotación del ratón
+            this.model.rotation.x = this.baseRotX + this.currentMouseRotX;
+            this.model.rotation.y = this.baseRotY + this.currentMouseRotY;
 
             // Aplicar dispersión física al scroll (similar al shader guide)
             const dispersalStrength = Math.pow(this.scrollProgress, 3.0) * 0.3;
