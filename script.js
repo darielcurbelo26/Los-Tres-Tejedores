@@ -9,7 +9,8 @@ window.birdProxy = {
     b1_y: -150,
     b1_z: 0, // Perspectiva/Profundidad
     b1_overrideRotX: 9999, // 9999 significa automático (sigue al ratón). Cambia a otro valor para fijarlo.
-    b1_overrideRotY: 9999,
+    b1_overrideRotY: 9999, // eje vertical (pitch/cabeceo)
+    b1_overrideRotZ: 9999, // eje profundidad (roll/giro)
     b1_scale: 0.85,
     b1_wingsAmp: 16.0,
 
@@ -17,8 +18,9 @@ window.birdProxy = {
     b2_x: -500,
     b2_y: 100,
     b2_z: -30,
-    b2_overrideRotX: 9999,
+    b2_overrideRotX: 9999, // eje horizontal (yaw/guiñada)
     b2_overrideRotY: 9999,
+    b2_overrideRotZ: 9999,
     b2_scale: 0.55,
     b2_wingsAmp: 13.0,
 
@@ -28,15 +30,17 @@ window.birdProxy = {
     b3_z: 30,
     b3_overrideRotX: 9999,
     b3_overrideRotY: 9999,
+    b3_overrideRotZ: 9999,
     b3_scale: 0.65,
     b3_wingsAmp: 18.0,
 
     // Descomposición de partículas
     decompose: 0.0,
 
-    // Rotación orbital global (Y: rotación horizontal, X: inclinación vertical)
+    // Rotación orbital global (Y: rotación horizontal, X: inclinación vertical, Z: giro)
     rotationY: 0.0,
-    rotationX: 0.0
+    rotationX: 0.0,
+    rotationZ: 0.0
 };
 
 /* =========================================
@@ -51,6 +55,7 @@ window.introBirdConfig = {
         b1_scale: 0.2,
         b1_overrideRotX: 9999,
         b1_overrideRotY: 9999,
+        b1_overrideRotZ: 9999,
 
         b2_x: -500,
         b2_y: -600,
@@ -58,6 +63,7 @@ window.introBirdConfig = {
         b2_scale: 0.0,
         b2_overrideRotX: 9999,
         b2_overrideRotY: 9999,
+        b2_overrideRotZ: 9999,
 
         b3_x: 500,
         b3_y: -600,
@@ -65,10 +71,12 @@ window.introBirdConfig = {
         b3_scale: 0.0,
         b3_overrideRotX: 9999,
         b3_overrideRotY: 9999,
+        b3_overrideRotZ: 9999,
 
         decompose: 1.0,
         rotationY: 0,
-        rotationX: 0
+        rotationX: 0,
+        rotationZ: 0
     },
 
     // Posiciones/escalas finales al ensamblar
@@ -1257,13 +1265,17 @@ function setupIntroPanelControls() {
             const value = parseFloat(slider.value);
             values[id] = value;
 
-            // Update the value display
+            // Update the value display (mostrar "auto" para rotaciones con 9999)
             const valueSpan = slider.parentElement.querySelector('.debug-value');
             if (valueSpan) {
-                valueSpan.textContent = value.toFixed(2);
+                if (id.includes('overrideRot') && Math.abs(value - 9999) < 0.01) {
+                    valueSpan.textContent = 'auto';
+                } else {
+                    valueSpan.textContent = value.toFixed(2);
+                }
             }
 
-            // Update window.birdProxy for REAL-TIME changes (lo que ven los pájaros ahora)
+            // Update window.birdProxy for REAL-TIME changes
             window.birdProxy[id] = value;
 
             // Also update introBirdConfig.initial for next intro reset
@@ -1272,32 +1284,39 @@ function setupIntroPanelControls() {
             }
         });
 
+        // Helper function to format rotation values
+        const formatRot = (val) => Math.abs(val - 9999) < 0.01 ? '9999' : val.toFixed(2);
+
         // Generate copyable code
         const code = `window.introBirdConfig.initial = {
     b1_x: ${values.b1_x.toFixed(2)},
     b1_y: ${values.b1_y.toFixed(2)},
     b1_z: ${values.b1_z.toFixed(2)},
     b1_scale: ${values.b1_scale.toFixed(2)},
-    b1_overrideRotX: 9999,
-    b1_overrideRotY: 9999,
+    b1_overrideRotX: ${formatRot(values.b1_overrideRotX)},
+    b1_overrideRotY: ${formatRot(values.b1_overrideRotY)},
+    b1_overrideRotZ: ${formatRot(values.b1_overrideRotZ)},
 
     b2_x: ${values.b2_x.toFixed(2)},
     b2_y: ${values.b2_y.toFixed(2)},
     b2_z: ${values.b2_z.toFixed(2)},
     b2_scale: ${values.b2_scale.toFixed(2)},
-    b2_overrideRotX: 9999,
-    b2_overrideRotY: 9999,
+    b2_overrideRotX: ${formatRot(values.b2_overrideRotX)},
+    b2_overrideRotY: ${formatRot(values.b2_overrideRotY)},
+    b2_overrideRotZ: ${formatRot(values.b2_overrideRotZ)},
 
     b3_x: ${values.b3_x.toFixed(2)},
     b3_y: ${values.b3_y.toFixed(2)},
     b3_z: ${values.b3_z.toFixed(2)},
     b3_scale: ${values.b3_scale.toFixed(2)},
-    b3_overrideRotX: 9999,
-    b3_overrideRotY: 9999,
+    b3_overrideRotX: ${formatRot(values.b3_overrideRotX)},
+    b3_overrideRotY: ${formatRot(values.b3_overrideRotY)},
+    b3_overrideRotZ: ${formatRot(values.b3_overrideRotZ)},
 
     decompose: 1.0,
     rotationY: 0,
-    rotationX: 0
+    rotationX: 0,
+    rotationZ: 0
 };`;
 
         codeOutput.value = code;
