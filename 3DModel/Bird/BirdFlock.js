@@ -77,7 +77,8 @@ window.BirdViewer = class BirdViewer {
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
-        this.controls.maxPolarAngle = Math.PI; 
+        this.controls.maxPolarAngle = Math.PI;
+        this.controls.enableZoom = !window.isIntroActive;  // Desactivar zoom durante intro
         this.controls.minDistance = 50;
         this.controls.maxDistance = 500;
 
@@ -366,8 +367,10 @@ window.BirdViewer = class BirdViewer {
 
     animate() {
         requestAnimationFrame(() => this.animate());
-        
+
         if (this.controls) {
+            // Desactivar zoom dinámicamente durante intro
+            this.controls.enableZoom = !window.isIntroActive;
             this.controls.update();
         }
         

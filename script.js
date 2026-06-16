@@ -612,6 +612,7 @@ window.isIntroActive = false;  // Bandera para desactivar ratón durante intro
 
 function initIntroSequence() {
     window.isIntroActive = true;  // Activar durante intro
+
     // 1. Inicializar el audio ambiente y música para que capte la primera interacción bubbled
     setupAudio();
 
