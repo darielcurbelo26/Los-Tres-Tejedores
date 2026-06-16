@@ -501,27 +501,9 @@ window.BirdViewer = class BirdViewer {
                     }
                 }
 
-                // Rotación global orbital 3D del bando (linked to scroll)
-                let x = basePos.x;
-                let y = basePos.y;
-                let z = basePos.z;
-
-                // Rotación en eje Y (órbita horizontal)
-                let rotY = window.birdProxy.rotationY || 0;
-                let cosY = Math.cos(rotY);
-                let sinY = Math.sin(rotY);
-                let rx = x * cosY - z * sinY;
-                let rz = x * sinY + z * cosY;
-
-                // Rotación en eje X (órbita vertical)
-                let rotX = window.birdProxy.rotationX || 0;
-                let cosX = Math.cos(rotX);
-                let sinX = Math.sin(rotX);
-                let ry = y * cosX - rz * sinX;
-                let rrz = y * sinX + rz * cosX;
-
+                // Posición directa sin órbita (sin transformación)
                 const depthPush = (1.0 - scaleVal) * 800;
-                bird.position.set(rx + driftX, ry + driftY, rrz + driftZ - depthPush);
+                bird.position.set(basePos.x + driftX, basePos.y + driftY, basePos.z + driftZ - depthPush);
             });
         }
 

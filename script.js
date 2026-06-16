@@ -35,12 +35,7 @@ window.birdProxy = {
     b3_wingsAmp: 18.0,
 
     // Descomposición de partículas
-    decompose: 0.0,
-
-    // Rotación orbital global (Y: rotación horizontal, X: inclinación vertical, Z: giro)
-    rotationY: 0.0,
-    rotationX: 0.0,
-    rotationZ: 0.0
+    decompose: 0.0
 };
 
 /* =========================================
@@ -68,7 +63,7 @@ window.introBirdConfig = {
 
     // Posiciones finales: los tres pájaros se agrupan en el centro.
     final: {
-        b1: { x:    0, y:  -80, z: 0, scale: 0.85 }, // centro
+        b1: { x:    0, y:  0, z: 0, scale: 0.85 }, // centro
         b2: { x: -180, y:  120, z: 0, scale: 0.55 }, // izquierda
         b3: { x:  180, y:  120, z: 0, scale: 0.65 }  // derecha
     },
@@ -1460,18 +1455,27 @@ function initializeIntroBirdsControlPanel() {
         b1_x_final: 0,
         b1_y_final: 10,
         b1_scale_final: 1,
+        b1_rotX: 0,
+        b1_rotY: 0,
+        b1_rotZ: 0,
 
         b2_x_init: -500,
         b2_y_init: 0,
         b2_x_final: -500,
         b2_y_final: 10,
         b2_scale_final: 1,
+        b2_rotX: 0,
+        b2_rotY: 0,
+        b2_rotZ: 0,
 
         b3_x_init: 0,
         b3_y_init: 0,
         b3_x_final: 100,
         b3_y_final: 10,
         b3_scale_final: 1,
+        b3_rotX: 0,
+        b3_rotY: 0,
+        b3_rotZ: 0,
 
         timing_duration: 4.5,
         timing_b1_start: 0,
@@ -1492,15 +1496,20 @@ function initializeIntroBirdsControlPanel() {
                 const value = parseFloat(e.target.value);
                 display.textContent = value.toFixed(2);
 
-                // Actualizar introBirdConfig
+                // Actualizar introBirdConfig y birdProxy
                 if (param.includes('_init')) {
-                    const birdKey = param.match(/b\d/)[0];
-                    const axis = param.includes('_x') ? 'x' : 'y';
                     window.introBirdConfig.initial[param] = value;
+                    // También actualizar birdProxy para cambios en tiempo real
+                    window.birdProxy[param] = value;
                 } else if (param.includes('_final')) {
                     const birdNum = param.match(/b\d/)[0];
                     const axis = param.includes('_x') ? 'x' : param.includes('_y') ? 'y' : 'scale';
                     window.introBirdConfig.final[birdNum][axis] = value;
+                } else if (param.includes('_rot')) {
+                    // Rotaciones: b1_rotX → window.birdProxy.b1_overrideRotX
+                    const overrideKey = param.replace('_rot', '_overrideRot');
+                    window.birdProxy[overrideKey] = value;
+                    window.introBirdConfig.initial[overrideKey] = value;
                 } else if (param.includes('timing_')) {
                     const timingKey = param.replace('timing_', '');
                     window.introBirdConfig.timings[timingKey] = value;
@@ -1555,6 +1564,17 @@ function initializeIntroBirdsControlPanel() {
         window.introBirdConfig.timings.b2_start = defaults.timing_b2_start;
         window.introBirdConfig.timings.b3_start = defaults.timing_b3_start;
 
+        // Resetear rotaciones en birdProxy
+        window.birdProxy.b1_overrideRotX = defaults.b1_rotX;
+        window.birdProxy.b1_overrideRotY = defaults.b1_rotY;
+        window.birdProxy.b1_overrideRotZ = defaults.b1_rotZ;
+        window.birdProxy.b2_overrideRotX = defaults.b2_rotX;
+        window.birdProxy.b2_overrideRotY = defaults.b2_rotY;
+        window.birdProxy.b2_overrideRotZ = defaults.b2_rotZ;
+        window.birdProxy.b3_overrideRotX = defaults.b3_rotX;
+        window.birdProxy.b3_overrideRotY = defaults.b3_rotY;
+        window.birdProxy.b3_overrideRotZ = defaults.b3_rotZ;
+
         updateBirdProxyFromIntroConfig();
     });
 
@@ -1588,9 +1608,9 @@ function initializeIntroBirdsControlPanel() {
         b3_overrideRotZ: ${cfg.initial.b3_overrideRotZ.toFixed(2)},
 
         decompose: ${cfg.initial.decompose.toFixed(2)},
-        rotationY: ${cfg.initial.rotationY.toFixed(2)},
-        rotationX: ${cfg.initial.rotationX.toFixed(2)},
-        rotationZ: ${cfg.initial.rotationZ.toFixed(2)}
+        rotationY: ${cfg.initial.rotationY !== undefined ? cfg.initial.rotationY.toFixed(2) : '0.00'},
+        rotationX: ${cfg.initial.rotationX !== undefined ? cfg.initial.rotationX.toFixed(2) : '0.00'},
+        rotationZ: ${cfg.initial.rotationZ !== undefined ? cfg.initial.rotationZ.toFixed(2) : '0.00'}
     },
 
     final: {
