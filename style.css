@@ -1102,12 +1102,94 @@ body {
     pointer-events: none;
 }
 
+.popup-asset {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup-asset.popup-left {
+    left: var(--padding-global);
+    animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.popup-asset.popup-right {
+    right: var(--padding-global);
+    animation: slideInRight 0.8s ease-out forwards;
+}
+
+/* Posiciones verticales para lado izquierdo */
+.popup-asset.popup-left-top {
+    top: 15%;
+    animation-delay: 0.2s;
+}
+
+.popup-asset.popup-left-middle {
+    top: 50%;
+    transform: translateY(-50%);
+    animation-delay: 0.4s;
+}
+
+.popup-asset.popup-left-bottom {
+    bottom: 15%;
+    animation-delay: 0.6s;
+}
+
+/* Posiciones verticales para lado derecho */
+.popup-asset.popup-right-top {
+    top: 15%;
+    animation-delay: 0.2s;
+}
+
+.popup-asset.popup-right-middle {
+    top: 50%;
+    transform: translateY(-50%);
+    animation-delay: 0.4s;
+}
+
+.popup-asset.popup-right-bottom {
+    bottom: 15%;
+    animation-delay: 0.6s;
+}
+
 .popup-img {
     height: 40vh;
     width: auto;
     max-width: 100%;
     object-fit: contain;
     border-radius: 24px;
+    transition: transform 0.3s ease-out, filter 0.3s ease-out;
+}
+
+.popup-asset:hover .popup-img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* Animación de entrada suave desde los lados */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 

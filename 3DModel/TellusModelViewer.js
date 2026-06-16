@@ -26,9 +26,9 @@ window.TellusModelViewer = class TellusModelViewer {
         this.baseRotX = 0.3;
         this.baseRotY = 0.5;
 
-        // Rotación continua infinita
+        // Rotación continua infinita (muy suave)
         this.continuousRotationY = 0;
-        this.rotationSpeed = 0.3; // Radianes por frame (~0.3 rad/frame)
+        this.rotationSpeed = 0.004; // Radianes por frame (~0.004 rad/frame = 1 vuelta cada ~1570 frames)
 
         this.init();
     }
