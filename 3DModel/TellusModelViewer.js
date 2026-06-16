@@ -31,24 +31,38 @@ window.TellusModelViewer = class TellusModelViewer {
         // 1. Escena con fondo transparente
         this.scene = new THREE.Scene();
 
-        // 2. Cámara
-        this.camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
-        this.camera.position.z = 200;
+        // 2. Cámara más cercana para ver el modelo escalado
+        this.camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 10000);
+        this.camera.position.z = 400;
 
         // 3. Renderizador con soporte transparente
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, precision: 'highp' });
         this.renderer.setSize(width, height);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.setClearColor(0x000000, 0); // Fondo transparente
+        this.renderer.tone = THREE.LinearToneMapping;
         this.container.appendChild(this.renderer.domElement);
 
-        // 4. Luces
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        // 4. Luces múltiples para mejor visibilidad
+        // Luz ambiental fuerte
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
         this.scene.add(ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-        directionalLight.position.set(100, 100, 100);
+        // Luz direccional principal
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        directionalLight.position.set(200, 200, 200);
+        directionalLight.castShadow = true;
         this.scene.add(directionalLight);
+
+        // Luz de relleno desde otro ángulo
+        const fillLight = new THREE.DirectionalLight(0x88ccff, 0.5);
+        fillLight.position.set(-200, 100, -200);
+        this.scene.add(fillLight);
+
+        // Luz puntual para mayor brillo
+        const pointLight = new THREE.PointLight(0xffffff, 0.8, 1000);
+        pointLight.position.set(0, 100, 150);
+        this.scene.add(pointLight);
 
         // 5. Cargar modelo
         this.loadModel();
@@ -69,28 +83,37 @@ window.TellusModelViewer = class TellusModelViewer {
             (gltf) => {
                 this.model = gltf.scene;
 
-                // Escalar el modelo
-                this.model.scale.set(1, 1, 1);
+                // Aumentar escala significativamente (100-200x)
+                const scale = 150;
+                this.model.scale.set(scale, scale, scale);
                 this.model.position.set(0, 0, 0);
+
+                // Rotación inicial para mejor visibilidad
+                this.model.rotation.x = 0.3;
+                this.model.rotation.y = 0.5;
 
                 // Configurar materiales para que sean más visibles
                 this.model.traverse((node) => {
                     if (node.isMesh) {
                         node.castShadow = true;
                         node.receiveShadow = true;
-                        // Hacer los materiales más emisivos si es necesario
+
                         if (node.material) {
                             node.material.toneMapped = false;
+                            // Aumentar intensidad de luces si tiene emisión
+                            if (node.material.emissive) {
+                                node.material.emissiveIntensity = 0.5;
+                            }
                         }
                     }
                 });
 
                 this.scene.add(this.model);
+                console.log('Modelo Tellus cargado exitosamente con escala:', scale);
             },
             (progress) => {
-                // Callback de progreso (opcional)
                 const percentComplete = (progress.loaded / progress.total) * 100;
-                // console.log(`Cargando modelo: ${percentComplete.toFixed(2)}%`);
+                console.log(`Cargando modelo: ${percentComplete.toFixed(2)}%`);
             },
             (error) => {
                 console.error('Error loading model:', error);
