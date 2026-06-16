@@ -440,7 +440,7 @@ body {
     height: 100%;
     z-index: -999 !important;
     pointer-events: none;
-    opacity: 0.2; /* Opacidad baja por defecto para el slider */
+    opacity: 1;
     /* El espaciado entre palabras se controla con el atributo y de cada <text> en el SVG,
        no con gap (que solo aplica a hijos directos del flex, y aquí solo hay un <svg>) */
 }
@@ -685,7 +685,7 @@ body {
    ========================================= */
 :root {
     /* ---- FONDO: textos y arcos de trazo (edita aquí TODO el fondo) ---- */
-    --bg-stroke-width: 0.25px;              /* grosor de trazo de textos y arcos de fondo */
+    --bg-stroke-width: 1px;              /* grosor de trazo de textos y arcos de fondo */
     --bg-stroke-opacity: 0.4;               /* opacidad de textos y arcos de fondo */
     --bg-stroke-color: var(--color-secondary); /* color de trazo de textos y arcos de fondo */
     --bg-text-size: 340px;                  /* tamaño de los textos gigantes (viewBox 1000x600) */
