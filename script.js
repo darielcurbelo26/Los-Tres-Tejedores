@@ -39,6 +39,54 @@ window.birdProxy = {
     rotationX: 0.0
 };
 
+/* =========================================
+   CONFIGURACIÓN DE AVES PARA LA INTRO (Separada del main)
+   ========================================= */
+window.introBirdConfig = {
+    // Estado inicial (fuera de pantalla)
+    initial: {
+        b1_x: 0,
+        b1_y: -600,
+        b1_z: -200,
+        b1_scale: 0.2,
+        b1_overrideRotX: 9999,
+        b1_overrideRotY: 9999,
+
+        b2_x: -500,
+        b2_y: -600,
+        b2_z: -200,
+        b2_scale: 0.0,
+        b2_overrideRotX: 9999,
+        b2_overrideRotY: 9999,
+
+        b3_x: 500,
+        b3_y: -600,
+        b3_z: -200,
+        b3_scale: 0.0,
+        b3_overrideRotX: 9999,
+        b3_overrideRotY: 9999,
+
+        decompose: 1.0,
+        rotationY: 0,
+        rotationX: 0
+    },
+
+    // Posiciones/escalas finales al ensamblar
+    final: {
+        b1: { y: 50, z: 0, scale: 1 },
+        b2: { y: 0, z: 0, scale: 0.55 },
+        b3: { y: 0, z: 0, scale: 0.65 }
+    },
+
+    // Timings de entrada escalonada
+    timings: {
+        b1_start: 0,    // Pájaro 1 empieza en t=0
+        b2_start: 0.5,  // Pájaro 2 empieza en t=0.5s
+        b3_start: 1.0,  // Pájaro 3 empieza en t=1.0s
+        duration: 4.5   // Duración de cada animación
+    }
+};
+
 let birdViewer = null;
 const visibleSections = new Set();
 
@@ -565,36 +613,8 @@ function initIntroSequence() {
     // 1. Inicializar el audio ambiente y música para que capte la primera interacción bubbled
     setupAudio();
 
-    // 2. Estado inicial de birdProxy exclusivo para la intro
-    Object.assign(window.birdProxy, {
-        // Pájaro 1 (Centro)
-        b1_x: 0,
-        b1_y: -600,
-        b1_z: -200,
-        b1_scale: 0.2,
-        b1_overrideRotX: 9999,
-        b1_overrideRotY: 9999,
-
-        // Pájaro 2 (Izquierdo)
-        b2_x: -500,
-        b2_y: -600,
-        b2_z: -200,
-        b2_scale: 0.0,
-        b2_overrideRotX: 9999,
-        b2_overrideRotY: 9999,
-
-        // Pájaro 3 (Derecho)
-        b3_x: 500,
-        b3_y: -600,
-        b3_z: -200,
-        b3_scale: 0.0,
-        b3_overrideRotX: 9999,
-        b3_overrideRotY: 9999,
-
-        decompose: 1.0,
-        rotationY: 0,
-        rotationX: 0
-    });
+    // 2. Estado inicial de birdProxy usando la configuración de intro separada
+    Object.assign(window.birdProxy, window.introBirdConfig.initial);
 
     // 2b. Posición inicial del título "Los Tres Tejedores" en el centro de la pantalla y un poco más pequeño (en la parte superior)
     gsap.set(".fixed-bottom-title", {
@@ -611,30 +631,31 @@ function initIntroSequence() {
 
     // 4. Crear el timeline GSAP para ensamblar la figura
     const introTl = gsap.timeline();
+    const cfg = window.introBirdConfig;
 
-    // Entrada escalonada de los 3 pájaros (staggered)
+    // Entrada escalonada de los 3 pájaros (staggered) - usando configuración separada
     introTl.to(window.birdProxy, {
         decompose: 0.0,
-        b1_y: 0,
-        b1_z: 0,
-        b1_scale: 0.85,
-        duration: 4.5,
+        b1_y: cfg.final.b1.y,
+        b1_z: cfg.final.b1.z,
+        b1_scale: cfg.final.b1.scale,
+        duration: cfg.timings.duration,
         ease: "power2.out"
-    }, 0)  // Pájaro 1 empieza en t=0
+    }, cfg.timings.b1_start)
     .to(window.birdProxy, {
-        b2_y: 0,
-        b2_z: 0,
-        b2_scale: 0.55,
-        duration: 4.5,
+        b2_y: cfg.final.b2.y,
+        b2_z: cfg.final.b2.z,
+        b2_scale: cfg.final.b2.scale,
+        duration: cfg.timings.duration,
         ease: "power2.out"
-    }, 0.5)  // Pájaro 2 empieza en t=0.5s (stagger)
+    }, cfg.timings.b2_start)
     .to(window.birdProxy, {
-        b3_y: 0,
-        b3_z: 0,
-        b3_scale: 0.65,
-        duration: 4.5,
+        b3_y: cfg.final.b3.y,
+        b3_z: cfg.final.b3.z,
+        b3_scale: cfg.final.b3.scale,
+        duration: cfg.timings.duration,
         ease: "power2.out"
-    }, 1.0)  // Pájaro 3 empieza en t=1.0s (stagger)
+    }, cfg.timings.b3_start)
     .to("#btn-intro-enter", {
         opacity: 1,
         pointerEvents: "auto",
