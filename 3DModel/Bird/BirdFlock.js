@@ -73,14 +73,9 @@ window.BirdViewer = class BirdViewer {
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25)); // Limitar a 1.25x en pantallas Retina
         this.container.appendChild(this.renderer.domElement);
 
-        // 4. Controls setup
-        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.05;
-        this.controls.maxPolarAngle = Math.PI;
-        this.controls.enableZoom = !window.isIntroActive;  // Desactivar zoom durante intro
-        this.controls.minDistance = 50;
-        this.controls.maxDistance = 500;
+        // 4. Controls setup - SIMPLIFIED: sin OrbitControls, solo lectura de birdProxy
+        // La cámara es estática, los pájaros se mueven desde birdProxy
+        this.controls = null;
 
         // 5. Build particle system
         this.buildParticleSystem();
@@ -381,12 +376,6 @@ window.BirdViewer = class BirdViewer {
     animate() {
         requestAnimationFrame(() => this.animate());
 
-        if (this.controls) {
-            // Desactivar zoom dinámicamente durante intro
-            this.controls.enableZoom = !window.isIntroActive;
-            this.controls.update();
-        }
-        
         if (this.birds && this.birds.length > 0) {
             const delta = this.clock.getDelta();
             const time = this.clock.getElapsedTime();
@@ -518,9 +507,6 @@ window.BirdViewer = class BirdViewer {
         this.animate = () => {};
         if (this._resizeHandler) {
             window.removeEventListener('resize', this._resizeHandler);
-        }
-        if (this.controls) {
-            this.controls.dispose();
         }
         if (this.material) {
             this.material.dispose();
