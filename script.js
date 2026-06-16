@@ -63,9 +63,9 @@ window.introBirdConfig = {
 
     // Posiciones finales: los tres pájaros se agrupan en el centro.
     final: {
-        b1: { x:    0, y:  0, z: 0, scale: 0.85 }, // centro
-        b2: { x: -180, y:  120, z: 0, scale: 0.55 }, // izquierda
-        b3: { x:  180, y:  120, z: 0, scale: 0.65 }  // derecha
+        b1: { x:    0, y:  0, z: 0, scale: 1, rotX: 0, rotY: 1, rotZ: 0 }, // centro
+        b2: { x: -500, y:  120, z: 0, scale: 0.55, rotX: 0, rotY: 0, rotZ: 0 }, // izquierda
+        b3: { x:  450, y:  120, z: 0, scale: 0.65, rotX: -2000, rotY: 0, rotZ: 0 }  // derecha
     },
 
     // Timings de entrada escalonada
@@ -1453,34 +1453,43 @@ function initializeIntroBirdsControlPanel() {
         b1_x_init: 0,
         b1_y_init: 0,
         b1_x_final: 0,
-        b1_y_final: 10,
-        b1_scale_final: 1,
+        b1_y_final: 0,
+        b1_scale_final: 0.85,
         b1_rotX: 0,
         b1_rotY: 0,
         b1_rotZ: 0,
+        b1_rotX_final: 0,
+        b1_rotY_final: 0,
+        b1_rotZ_final: 0,
 
         b2_x_init: -500,
         b2_y_init: 0,
-        b2_x_final: -500,
-        b2_y_final: 10,
-        b2_scale_final: 1,
+        b2_x_final: -180,
+        b2_y_final: 120,
+        b2_scale_final: 0.55,
         b2_rotX: 0,
         b2_rotY: 0,
         b2_rotZ: 0,
+        b2_rotX_final: 0,
+        b2_rotY_final: 0,
+        b2_rotZ_final: 0,
 
         b3_x_init: 0,
         b3_y_init: 0,
-        b3_x_final: 100,
-        b3_y_final: 10,
-        b3_scale_final: 1,
+        b3_x_final: 180,
+        b3_y_final: 120,
+        b3_scale_final: 0.65,
         b3_rotX: 0,
         b3_rotY: 0,
         b3_rotZ: 0,
+        b3_rotX_final: 0,
+        b3_rotY_final: 0,
+        b3_rotZ_final: 0,
 
-        timing_duration: 4.5,
+        timing_duration: 3.5,
         timing_b1_start: 0,
-        timing_b2_start: 0.5,
-        timing_b3_start: 1.0
+        timing_b2_start: 0.4,
+        timing_b3_start: 0.8
     };
 
     // Mapeo de parámetros
@@ -1501,9 +1510,14 @@ function initializeIntroBirdsControlPanel() {
                     window.introBirdConfig.initial[param] = value;
                     // También actualizar birdProxy para cambios en tiempo real
                     window.birdProxy[param] = value;
-                } else if (param.includes('_final')) {
+                } else if (param.includes('_final') && !param.includes('_rot')) {
                     const birdNum = param.match(/b\d/)[0];
                     const axis = param.includes('_x') ? 'x' : param.includes('_y') ? 'y' : 'scale';
+                    window.introBirdConfig.final[birdNum][axis] = value;
+                } else if (param.includes('_final') && param.includes('_rot')) {
+                    // Rotaciones finales: b1_rotX_final → final.b1.rotX
+                    const birdNum = param.match(/b\d/)[0];
+                    const axis = param.includes('_rotX') ? 'rotX' : param.includes('_rotY') ? 'rotY' : 'rotZ';
                     window.introBirdConfig.final[birdNum][axis] = value;
                 } else if (param.includes('_rot')) {
                     // Rotaciones: b1_rotX → window.birdProxy.b1_overrideRotX
@@ -1552,12 +1566,23 @@ function initializeIntroBirdsControlPanel() {
         window.introBirdConfig.final.b1.x = defaults.b1_x_final;
         window.introBirdConfig.final.b1.y = defaults.b1_y_final;
         window.introBirdConfig.final.b1.scale = defaults.b1_scale_final;
+        window.introBirdConfig.final.b1.rotX = defaults.b1_rotX_final;
+        window.introBirdConfig.final.b1.rotY = defaults.b1_rotY_final;
+        window.introBirdConfig.final.b1.rotZ = defaults.b1_rotZ_final;
+
         window.introBirdConfig.final.b2.x = defaults.b2_x_final;
         window.introBirdConfig.final.b2.y = defaults.b2_y_final;
         window.introBirdConfig.final.b2.scale = defaults.b2_scale_final;
+        window.introBirdConfig.final.b2.rotX = defaults.b2_rotX_final;
+        window.introBirdConfig.final.b2.rotY = defaults.b2_rotY_final;
+        window.introBirdConfig.final.b2.rotZ = defaults.b2_rotZ_final;
+
         window.introBirdConfig.final.b3.x = defaults.b3_x_final;
         window.introBirdConfig.final.b3.y = defaults.b3_y_final;
         window.introBirdConfig.final.b3.scale = defaults.b3_scale_final;
+        window.introBirdConfig.final.b3.rotX = defaults.b3_rotX_final;
+        window.introBirdConfig.final.b3.rotY = defaults.b3_rotY_final;
+        window.introBirdConfig.final.b3.rotZ = defaults.b3_rotZ_final;
 
         window.introBirdConfig.timings.duration = defaults.timing_duration;
         window.introBirdConfig.timings.b1_start = defaults.timing_b1_start;
