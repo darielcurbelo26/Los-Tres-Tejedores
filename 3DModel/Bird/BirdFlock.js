@@ -347,14 +347,27 @@ window.BirdViewer = class BirdViewer {
 
         const baseRot = -Math.PI / 2;
         // Centro: b1 (Tamaño 0.85, rotaciones personalizadas, flap más rápido)
-        this.birds.push(createBird(0, -300, 0, 0, baseRot - 0.15, 0.1, 0.05, 0.85, 1.1, 16.0)); 
+        this.birds.push(createBird(0, -300, 0, 0, baseRot - 0.15, 0.1, 0.05, 0.85, 1.1, 16.0));
         this.birds[0].userData.mat.uniforms.uDensity = { value: 0.6 };
         // Izquierda: b2 (Tamaño 0.55, rotaciones diferentes, flap más lento)
-        this.birds.push(createBird(-300, 300, -50, 1.5, baseRot + Math.PI / 4, 0.25, -0.15, 0.55, 0.85, 13.0)); 
+        this.birds.push(createBird(-300, 300, -50, 1.5, baseRot + Math.PI / 4, 0.25, -0.15, 0.55, 0.85, 13.0));
         this.birds[1].userData.mat.uniforms.uDensity = { value: 0.15 };
         // Derecha: b3 (Tamaño 0.65, rotaciones diferentes, flap más rápido)
-        this.birds.push(createBird(300, 300, 50, 3.2, baseRot - Math.PI / 3, -0.1, 0.2, 0.65, 1.3, 18.0)); 
+        this.birds.push(createBird(300, 300, 50, 3.2, baseRot - Math.PI / 3, -0.1, 0.2, 0.65, 1.3, 18.0));
         this.birds[2].userData.mat.uniforms.uDensity = { value: 0.15 };
+
+        // Aplicar rotaciones iniciales del proxy para evitar lerp desde baseRot
+        if (window.birdProxy) {
+            this.birds.forEach((bird, index) => {
+                const i = index + 1;
+                const rotX = window.birdProxy[`b${i}_overrideRotX`];
+                const rotY = window.birdProxy[`b${i}_overrideRotY`];
+                const rotZ = window.birdProxy[`b${i}_overrideRotZ`];
+                if (rotX !== undefined && rotX !== 9999) bird.rotation.x = rotX;
+                if (rotY !== undefined && rotY !== 9999) bird.rotation.y = rotY;
+                if (rotZ !== undefined && rotZ !== 9999) bird.rotation.z = rotZ;
+            });
+        }
     }
 
     onWindowResize() {
@@ -433,25 +446,40 @@ window.BirdViewer = class BirdViewer {
                 }
                 
                 const rotTime = time + bird.userData.timeOffset;
-                const boomerangY = Math.sin(rotTime * 0.4) * 0.35;
-                const boomerangX = Math.sin(rotTime * 0.2) * 0.1;
 
-                // Desactivar movimiento de ratón durante intro
-                const mouseInfluenceX = window.isIntroActive ? 0 : this.mouseX * 0.5;
-                const mouseInfluenceY = window.isIntroActive ? 0 : -this.mouseY * 0.3;
+                // Durante la intro: sin boomerang, sin ratón, sin drift
+                const isIntro = window.isIntroActive;
+                const boomerangY = isIntro ? 0 : Math.sin(rotTime * 0.4) * 0.35;
+                const boomerangX = isIntro ? 0 : Math.sin(rotTime * 0.2) * 0.1;
+                const mouseInfluenceX = isIntro ? 0 : this.mouseX * 0.5;
+                const mouseInfluenceY = isIntro ? 0 : -this.mouseY * 0.3;
 
-                const targetRotX = bird.userData.overrideRotX !== undefined ? bird.userData.overrideRotX : bird.userData.baseRotX + boomerangX + mouseInfluenceY;
-                const targetRotY = bird.userData.overrideRotY !== undefined ? bird.userData.overrideRotY : bird.userData.baseRotY + boomerangY + mouseInfluenceX;
-                const targetRotZ = bird.userData.overrideRotZ !== undefined ? bird.userData.overrideRotZ : 0;
+                const rotOffsetX = window.birdProxy[`b${index + 1}_rotOffsetX`] || 0;
+                const rotOffsetY = window.birdProxy[`b${index + 1}_rotOffsetY`] || 0;
+                const rotOffsetZ = window.birdProxy[`b${index + 1}_rotOffsetZ`] || 0;
 
-                bird.rotation.x += (targetRotX - bird.rotation.x) * 0.03;
-                bird.rotation.y += (targetRotY - bird.rotation.y) * 0.03;
-                bird.rotation.z += (targetRotZ - bird.rotation.z) * 0.03;
+                if (bird.userData.overrideRotX !== undefined) {
+                    bird.rotation.x = bird.userData.overrideRotX;
+                } else {
+                    const targetRotX = bird.userData.baseRotX + boomerangX + mouseInfluenceY + rotOffsetX;
+                    bird.rotation.x += (targetRotX - bird.rotation.x) * 0.03;
+                }
+                if (bird.userData.overrideRotY !== undefined) {
+                    bird.rotation.y = bird.userData.overrideRotY;
+                } else {
+                    const targetRotY = bird.userData.baseRotY + boomerangY + mouseInfluenceX + rotOffsetY;
+                    bird.rotation.y += (targetRotY - bird.rotation.y) * 0.03;
+                }
+                if (bird.userData.overrideRotZ !== undefined) {
+                    bird.rotation.z = bird.userData.overrideRotZ;
+                } else {
+                    bird.rotation.z += (rotOffsetZ - bird.rotation.z) * 0.03;
+                }
 
-                // Organic 3D drifting
-                const driftX = Math.sin(rotTime * 0.5) * 15.0;
-                const driftY = Math.cos(rotTime * 0.4) * 12.0;
-                const driftZ = Math.sin(rotTime * 0.3) * 10.0;
+                // Organic 3D drifting (desactivado durante intro)
+                const driftX = isIntro ? 0 : Math.sin(rotTime * 0.5) * 15.0;
+                const driftY = isIntro ? 0 : Math.cos(rotTime * 0.4) * 12.0;
+                const driftZ = isIntro ? 0 : Math.sin(rotTime * 0.3) * 10.0;
 
                 let basePos = new THREE.Vector3(0, 0, 0);
                 let scaleVal = bird.userData.baseScale;

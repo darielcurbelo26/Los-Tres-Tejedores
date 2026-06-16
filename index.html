@@ -752,4 +752,182 @@
 
     <!-- Script principal -->
     <script src="script.js?v=27"></script>
+
+    <!-- Panel de Controles para Pájaros de Intro -->
+    <div id="intro-birds-controls-panel" class="intro-birds-controls-panel">
+        <div class="controls-header">
+            <h3>Pájaros Intro</h3>
+            <button id="toggle-intro-controls" class="toggle-btn" title="Minimizar/Expandir">−</button>
+        </div>
+        <div class="controls-content intro-birds-content">
+            <!-- Pájaro 1 -->
+            <div class="bird-group">
+                <h4>Pájaro 1</h4>
+                <div class="control-group">
+                    <label>Inicial X: <span id="b1_x_init-display">0.00</span></label>
+                    <input type="range" id="b1_x_init-slider" min="-800" max="800" value="0" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Inicial Y: <span id="b1_y_init-display">0.00</span></label>
+                    <input type="range" id="b1_y_init-slider" min="-800" max="800" value="0" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Final X: <span id="b1_x_final-display">0.00</span></label>
+                    <input type="range" id="b1_x_final-slider" min="-800" max="800" value="0" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Final Y: <span id="b1_y_final-display">10.00</span></label>
+                    <input type="range" id="b1_y_final-slider" min="-800" max="800" value="10" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Escala Final: <span id="b1_scale_final-display">1.00</span></label>
+                    <input type="range" id="b1_scale_final-slider" min="0.1" max="3" value="1" step="0.1">
+                </div>
+            </div>
+
+            <!-- Pájaro 2 -->
+            <div class="bird-group">
+                <h4>Pájaro 2</h4>
+                <div class="control-group">
+                    <label>Inicial X: <span id="b2_x_init-display">-500.00</span></label>
+                    <input type="range" id="b2_x_init-slider" min="-800" max="800" value="-500" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Inicial Y: <span id="b2_y_init-display">0.00</span></label>
+                    <input type="range" id="b2_y_init-slider" min="-800" max="800" value="0" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Final X: <span id="b2_x_final-display">-500.00</span></label>
+                    <input type="range" id="b2_x_final-slider" min="-800" max="800" value="-500" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Final Y: <span id="b2_y_final-display">10.00</span></label>
+                    <input type="range" id="b2_y_final-slider" min="-800" max="800" value="10" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Escala Final: <span id="b2_scale_final-display">1.00</span></label>
+                    <input type="range" id="b2_scale_final-slider" min="0.1" max="3" value="1" step="0.1">
+                </div>
+            </div>
+
+            <!-- Pájaro 3 -->
+            <div class="bird-group">
+                <h4>Pájaro 3</h4>
+                <div class="control-group">
+                    <label>Inicial X: <span id="b3_x_init-display">0.00</span></label>
+                    <input type="range" id="b3_x_init-slider" min="-800" max="800" value="0" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Inicial Y: <span id="b3_y_init-display">0.00</span></label>
+                    <input type="range" id="b3_y_init-slider" min="-800" max="800" value="0" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Final X: <span id="b3_x_final-display">100.00</span></label>
+                    <input type="range" id="b3_x_final-slider" min="-800" max="800" value="100" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Final Y: <span id="b3_y_final-display">10.00</span></label>
+                    <input type="range" id="b3_y_final-slider" min="-800" max="800" value="10" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Escala Final: <span id="b3_scale_final-display">1.00</span></label>
+                    <input type="range" id="b3_scale_final-slider" min="0.1" max="3" value="1" step="0.1">
+                </div>
+            </div>
+
+            <!-- Timings -->
+            <div class="timings-group">
+                <h4>Timings</h4>
+                <div class="control-group">
+                    <label>Duración: <span id="timing_duration-display">4.50</span>s</label>
+                    <input type="range" id="timing_duration-slider" min="1" max="10" value="4.5" step="0.5">
+                </div>
+                <div class="control-group">
+                    <label>B1 Start: <span id="timing_b1_start-display">0.00</span>s</label>
+                    <input type="range" id="timing_b1_start-slider" min="0" max="5" value="0" step="0.1">
+                </div>
+                <div class="control-group">
+                    <label>B2 Start: <span id="timing_b2_start-display">0.50</span>s</label>
+                    <input type="range" id="timing_b2_start-slider" min="0" max="5" value="0.5" step="0.1">
+                </div>
+                <div class="control-group">
+                    <label>B3 Start: <span id="timing_b3_start-display">1.00</span>s</label>
+                    <input type="range" id="timing_b3_start-slider" min="0" max="5" value="1.0" step="0.1">
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="control-actions">
+                <button id="reset-intro-controls" class="reset-btn">Resetear</button>
+                <button id="copy-intro-config" class="copy-btn">Copiar Código</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de Controles para Modelo Tellus -->
+    <div id="tellus-controls-panel" class="tellus-controls-panel">
+        <div class="controls-header">
+            <h3>Modelo Tellus</h3>
+            <button id="toggle-controls" class="toggle-btn" title="Minimizar/Expandir">−</button>
+        </div>
+        <div class="controls-content">
+            <!-- Posición -->
+            <div class="control-group">
+                <label>Posición X: <span id="t_x-display">0.00</span></label>
+                <input type="range" id="t_x-slider" min="-500" max="500" value="0" step="10">
+            </div>
+            <div class="control-group">
+                <label>Posición Y: <span id="t_y-display">0.00</span></label>
+                <input type="range" id="t_y-slider" min="-500" max="500" value="0" step="10">
+            </div>
+            <div class="control-group">
+                <label>Posición Z: <span id="t_z-display">0.00</span></label>
+                <input type="range" id="t_z-slider" min="-500" max="500" value="0" step="10">
+            </div>
+
+            <!-- Escala -->
+            <div class="control-group">
+                <label>Escala: <span id="t_scale-display">150.00</span></label>
+                <input type="range" id="t_scale-slider" min="10" max="300" value="150" step="5">
+            </div>
+
+            <!-- Rotación -->
+            <div class="control-group">
+                <label>Rotación X: <span id="t_rotX-display">0.30</span></label>
+                <input type="range" id="t_rotX-slider" min="0" max="6.28" value="0.3" step="0.1">
+            </div>
+            <div class="control-group">
+                <label>Rotación Y: <span id="t_rotY-display">0.50</span></label>
+                <input type="range" id="t_rotY-slider" min="0" max="6.28" value="0.5" step="0.1">
+            </div>
+
+            <!-- Opacidad -->
+            <div class="control-group">
+                <label>Opacidad: <span id="t_opacity-display">1.00</span></label>
+                <input type="range" id="t_opacity-slider" min="0" max="1" value="1" step="0.05">
+            </div>
+
+            <!-- Mouse Follow -->
+            <div class="control-group">
+                <label>Mouse Follow: <span id="t_mouseFollow-display">1.00</span></label>
+                <input type="range" id="t_mouseFollow-slider" min="0" max="1" value="1" step="0.1">
+            </div>
+
+            <!-- Luces -->
+            <div class="control-group">
+                <label>Luz Ambiental: <span id="t_ambientIntensity-display">1.20</span></label>
+                <input type="range" id="t_ambientIntensity-slider" min="0" max="3" value="1.2" step="0.1">
+            </div>
+            <div class="control-group">
+                <label>Luz Directional: <span id="t_directionalIntensity-display">1.00</span></label>
+                <input type="range" id="t_directionalIntensity-slider" min="0" max="3" value="1" step="0.1">
+            </div>
+
+            <!-- Botones -->
+            <div class="control-actions">
+                <button id="reset-controls" class="reset-btn">Resetear</button>
+                <button id="copy-config" class="copy-btn">Copiar Código</button>
+            </div>
+        </div>
+    </div>
 </body></html>

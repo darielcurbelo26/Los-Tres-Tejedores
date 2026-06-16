@@ -7,31 +7,31 @@ window.birdProxy = {
     // Pájaro Principal (Centro)
     b1_x: 0,
     b1_y: 0,
-    b1_z: 0, // Perspectiva/Profundidad
-    b1_overrideRotX: 0, // 9999 significa automático (sigue al ratón). Cambia a otro valor para fijarlo.
-    b1_overrideRotY: 0, // eje vertical (pitch/cabeceo)
-    b1_overrideRotZ: 0, // eje profundidad (roll/giro)
-    b1_scale: 0.85,
+    b1_z: 0,
+    b1_overrideRotX: 0,
+    b1_overrideRotY: 0,
+    b1_overrideRotZ: 0,
+    b1_scale: 0.0,
     b1_wingsAmp: 16.0,
 
     // Pájaro Izquierdo
-    b2_x: -500,
-    b2_y: 100,
-    b2_z: -40,
-    b2_overrideRotX: 0, // eje horizontal (yaw/guiñada)
+    b2_x: 0,
+    b2_y: 0,
+    b2_z: 0,
+    b2_overrideRotX: 0,
     b2_overrideRotY: 0,
     b2_overrideRotZ: 0,
-    b2_scale: 0.55,
+    b2_scale: 0.0,
     b2_wingsAmp: 13.0,
 
     // Pájaro Derecho
-    b3_x: 500,
-    b3_y: 200,
-    b3_z: 40,
+    b3_x: 0,
+    b3_y: 0,
+    b3_z: 0,
     b3_overrideRotX: 0,
     b3_overrideRotY: 0,
     b3_overrideRotZ: 0,
-    b3_scale: 0.65,
+    b3_scale: 0.0,
     b3_wingsAmp: 18.0,
 
     // Descomposición de partículas
@@ -46,67 +46,39 @@ window.birdProxy = {
 /* =========================================
    CONFIGURACIÓN DE AVES PARA LA INTRO (Separada del main)
    ========================================= */
+// Las rotaciones NO se animan en la intro — se dejan en 9999 para que BirdFlock
+// las gestione con su propio lerp (igual que hacen los pájaros del interior).
+// Solo se animan x, y, z, scale (como el sistema interior con bird-config.js).
 window.introBirdConfig = {
-    // Estado inicial (fuera de pantalla)
+    // Posiciones iniciales: cada pájaro llega desde una dirección distinta.
+    // Rotaciones a 9999 = modo automático (BirdFlock hace el lerp solo).
     initial: {
-        b1_x: 0,
-        b1_y: 0,
-        b1_z: 180,
-        b1_scale: 0.0,
-        b1_overrideRotX: 0,
-        b1_overrideRotY: 10,
-        b1_overrideRotZ: 0,
-
-        b2_x: -800,
-        b2_y: 600,
-        b2_z: -200,
-        b2_scale: 0.0,
-        b2_overrideRotX: 0,
-        b2_overrideRotY: 10,
-        b2_overrideRotZ: 0,
-
-        b3_x: 500,
-        b3_y: -600,
-        b3_z: -200,
-        b3_scale: 0.0,
-        b3_overrideRotX: 0,
-        b3_overrideRotY: 0,
-        b3_overrideRotZ: 0,
-
-        decompose: 5.0,
-        rotationY: 1.34,
-        rotationX: 0,
-        rotationZ: 0
+        b1_x: 0,    b1_y: -900, b1_z: -200, b1_scale: 0.2,  // entra desde abajo
+        b2_x: -900, b2_y:  400, b2_z: -200, b2_scale: 0.2,  // entra desde izq-arriba
+        b3_x:  900, b3_y:  400, b3_z: -200, b3_scale: 0.2,  // entra desde der-arriba
+        b1_overrideRotX: 9999, b1_overrideRotY: 9999, b1_overrideRotZ: 9999,
+        b2_overrideRotX: 9999, b2_overrideRotY: 9999, b2_overrideRotZ: 9999,
+        b3_overrideRotX: 9999, b3_overrideRotY: 9999, b3_overrideRotZ: 9999,
+        // Offset aditivo sobre la rotación automática (0 = sin cambio, en radianes).
+        b1_rotOffsetX: 0, b1_rotOffsetY: 0, b1_rotOffsetZ: 0,
+        b2_rotOffsetX: 0, b2_rotOffsetY: 0, b2_rotOffsetZ: 0,
+        b3_rotOffsetX: 0, b3_rotOffsetY: 0, b3_rotOffsetZ: 0,
+        decompose: 0.0, rotationY: 0, rotationX: 0, rotationZ: 0
     },
 
-    // Posiciones/escalas finales al ensamblar
+    // Posiciones finales: los tres pájaros se agrupan en el centro.
     final: {
-        b1: {
-            x: 0,
-            y: 10,
-            z: 0,
-            scale: 1
-        },
-        b2: {
-            x: -500,
-            y: 0,
-            z: 0,
-            scale: 0.55
-        },
-        b3: {
-            x: 500,
-            y: 0,
-            z: 0,
-            scale: 0.65
-        }
+        b1: { x:    0, y:  -80, z: 0, scale: 0.85 }, // centro
+        b2: { x: -180, y:  120, z: 0, scale: 0.55 }, // izquierda
+        b3: { x:  180, y:  120, z: 0, scale: 0.65 }  // derecha
     },
 
     // Timings de entrada escalonada
     timings: {
-        b1_start: 0, // Pájaro 1 empieza en t=0
-        b2_start: 0.5, // Pájaro 2 empieza en t=0.5s
-        b3_start: 1.0, // Pájaro 3 empieza en t=1.0s
-        duration: 4.5 // Duración de cada animación
+        b1_start: 0,   // Pájaro 1 empieza primero
+        b2_start: 0.4, // Pájaro 2 con pequeño retraso
+        b3_start: 0.8, // Pájaro 3 último
+        duration: 3.5
     }
 };
 
@@ -879,71 +851,53 @@ function buildEighthSectionTimeline() {
    integrados en BirdFlock) y al llegar a "Descargar" se dispersan a los bordes
    y el contenedor se desvanece (descomposición simple, sin shader). */
 function buildBirdTimeline() {
-    // TODA la coreografía de los pájaros se define en bird-config.js (window.BIRD_CONFIG).
-    // Cada pájaro tiene su propio camino independiente; NO hay órbita global del bando.
     const cfg = window.BIRD_CONFIG;
-    if (!cfg) {
-        console.warn("BIRD_CONFIG no cargado (bird-config.js)");
-        return;
-    }
+    if (!cfg) { console.warn("BIRD_CONFIG no cargado (bird-config.js)"); return; }
 
-    // Convierte un keyframe {x,y,z,scale,wingsAmp,rotX,rotY} a las propiedades bN_* del proxy.
+    // Convierte propiedades de keyframe a las claves bN_* del proxy.
     const toProxy = (key, kf) => {
+        const map = { x: "_x", y: "_y", z: "_z", scale: "_scale", wingsAmp: "_wingsAmp", rotX: "_overrideRotX", rotY: "_overrideRotY" };
         const o = {};
-        if (kf.x !== undefined) o[key + "_x"] = kf.x;
-        if (kf.y !== undefined) o[key + "_y"] = kf.y;
-        if (kf.z !== undefined) o[key + "_z"] = kf.z;
-        if (kf.scale !== undefined) o[key + "_scale"] = kf.scale;
-        if (kf.wingsAmp !== undefined) o[key + "_wingsAmp"] = kf.wingsAmp;
-        if (kf.rotX !== undefined) o[key + "_overrideRotX"] = kf.rotX;
-        if (kf.rotY !== undefined) o[key + "_overrideRotY"] = kf.rotY;
+        Object.keys(map).forEach(p => { if (kf[p] !== undefined) o[key + map[p]] = kf[p]; });
         return o;
     };
 
-    // Estado inicial: cada pájaro en su `start`. Sin órbita global (rotationY/X = 0).
-    const initial = {
-        decompose: 0.0,
-        rotationY: 0.0,
-        rotationX: 0.0
-    };
-    Object.keys(cfg.birds).forEach(key => Object.assign(initial, toProxy(key, cfg.birds[key].start)));
+    // Estado inicial: `from` de la fase `enter` de cada pájaro.
+    const initial = { decompose: 0.0, rotationY: 0.0, rotationX: 0.0 };
+    Object.keys(cfg.birds).forEach(key => Object.assign(initial, toProxy(key, cfg.birds[key].enter.from)));
     Object.assign(window.birdProxy, initial);
 
     const tl = gsap.timeline({
         scrollTrigger: {
             id: "birdScrollTrigger",
             trigger: ".map-crear-animated-section",
-            start: "top center", // a partir de ~la mitad del recorrido
+            start: "top center",
             endTrigger: ".eighth-section",
-            end: "bottom bottom", // hasta el final de la octava sección unificada
+            end: "bottom bottom",
             scrub: SCRUB
         }
     });
 
-    // Aparece el contenedor 3D
-    tl.to("#birds-container", {
-        opacity: 1,
-        duration: cfg.container.fadeIn
-    }, 0);
+    tl.to("#birds-container", { opacity: 1, duration: cfg.container.fadeIn }, 0);
 
-    // Camino INDEPENDIENTE de cada pájaro (cada tramo arranca en su `at`)
+    // Cada pájaro: recorre sus fases en orden de `at`.
+    // El estado inicial ya está en el proxy (enter.from), así que todas las fases usan `to`.
     Object.keys(cfg.birds).forEach(key => {
-        cfg.birds[key].path.forEach(kf => {
-            tl.to(window.birdProxy, {
-                ...toProxy(key, kf),
-                duration: kf.duration,
-                ease: kf.ease || "power2.inOut"
-            }, kf.at);
+        const bird = cfg.birds[key];
+        Object.values(bird).forEach(phase => {
+            tl.to(window.birdProxy,
+                { ...toProxy(key, phase.to), duration: phase.duration, ease: phase.ease || "power2.inOut" },
+                phase.at
+            );
         });
     });
 
-    // Descomposición en partículas + desvanecido del contenedor
     tl.to(window.birdProxy, {
             decompose: 1.0,
             duration: cfg.decompose.duration,
             ease: cfg.decompose.ease || "power2.out"
         }, cfg.decompose.at)
-        .to("#birds-container", {
+      .to("#birds-container", {
             opacity: 0,
             duration: cfg.container.fadeOut,
             ease: "power2.inOut"
@@ -1069,31 +1023,20 @@ function initIntroSequence() {
     const introTl = gsap.timeline();
     const cfg = window.introBirdConfig;
 
-    // Entrada escalonada de los 3 pájaros (staggered) - usando configuración separada
-    introTl.to(window.birdProxy, {
-            decompose: 0.0,
-            b1_x: cfg.final.b1.x,
-            b1_y: cfg.final.b1.y,
-            b1_z: cfg.final.b1.z,
-            b1_scale: cfg.final.b1.scale,
-            duration: cfg.timings.duration,
-            ease: "power2.out"
+    // Entrada escalonada: solo animamos x, y, z, scale.
+    // Las rotaciones están en 9999 → BirdFlock las lerps solo, sin interferencia GSAP.
+    introTl
+        .to(window.birdProxy, {
+            b1_x: cfg.final.b1.x, b1_y: cfg.final.b1.y, b1_z: cfg.final.b1.z, b1_scale: cfg.final.b1.scale,
+            duration: cfg.timings.duration, ease: "power2.out"
         }, cfg.timings.b1_start)
         .to(window.birdProxy, {
-            b2_x: cfg.final.b2.x,
-            b2_y: cfg.final.b2.y,
-            b2_z: cfg.final.b2.z,
-            b2_scale: cfg.final.b2.scale,
-            duration: cfg.timings.duration,
-            ease: "power2.out"
+            b2_x: cfg.final.b2.x, b2_y: cfg.final.b2.y, b2_z: cfg.final.b2.z, b2_scale: cfg.final.b2.scale,
+            duration: cfg.timings.duration, ease: "power2.out"
         }, cfg.timings.b2_start)
         .to(window.birdProxy, {
-            b3_x: cfg.final.b3.x,
-            b3_y: cfg.final.b3.y,
-            b3_z: cfg.final.b3.z,
-            b3_scale: cfg.final.b3.scale,
-            duration: cfg.timings.duration,
-            ease: "power2.out"
+            b3_x: cfg.final.b3.x, b3_y: cfg.final.b3.y, b3_z: cfg.final.b3.z, b3_scale: cfg.final.b3.scale,
+            duration: cfg.timings.duration, ease: "power2.out"
         }, cfg.timings.b3_start)
         .to("#btn-intro-enter", {
             opacity: 1,
@@ -1403,5 +1346,287 @@ function initializeTellusModel() {
     });
 }
 
+/* =========================================
+   PANEL DE CONTROLES PARA MODELO TELLUS
+   ========================================= */
+function initializeTellusControlPanel() {
+    const panel = document.getElementById('tellus-controls-panel');
+    const toggleBtn = document.getElementById('toggle-controls');
+    const resetBtn = document.getElementById('reset-controls');
+    const copyBtn = document.getElementById('copy-config');
+    const controlsContent = document.querySelector('.controls-content');
+
+    // Valores por defecto
+    const defaults = {
+        t_x: 0,
+        t_y: 0,
+        t_z: 0,
+        t_scale: 150,
+        t_rotX: 0.3,
+        t_rotY: 0.5,
+        t_opacity: 1,
+        t_mouseFollow: 1.0,
+        t_ambientIntensity: 1.2,
+        t_directionalIntensity: 1.0,
+        t_fillIntensity: 0.5,
+        t_pointIntensity: 0.8
+    };
+
+    // Mapeo de parámetros
+    const sliderParams = [
+        't_x', 't_y', 't_z', 't_scale', 't_rotX', 't_rotY',
+        't_opacity', 't_mouseFollow', 't_ambientIntensity', 't_directionalIntensity'
+    ];
+
+    // Conectar sliders con tellusProxy
+    sliderParams.forEach(param => {
+        const slider = document.getElementById(`${param}-slider`);
+        const display = document.getElementById(`${param}-display`);
+
+        if (slider && display) {
+            slider.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                window.tellusProxy[param] = value;
+                display.textContent = value.toFixed(2);
+            });
+
+            // Inicializar display con valor actual del proxy
+            const currentValue = window.tellusProxy[param] !== undefined
+                ? window.tellusProxy[param]
+                : defaults[param];
+            slider.value = currentValue;
+            display.textContent = currentValue.toFixed(2);
+        }
+    });
+
+    // Toggle panel visibility
+    toggleBtn.addEventListener('click', () => {
+        controlsContent.classList.toggle('hidden');
+        toggleBtn.textContent = controlsContent.classList.contains('hidden') ? '+' : '−';
+    });
+
+    // Reset button
+    resetBtn.addEventListener('click', () => {
+        Object.keys(defaults).forEach(param => {
+            window.tellusProxy[param] = defaults[param];
+            const slider = document.getElementById(`${param}-slider`);
+            const display = document.getElementById(`${param}-display`);
+            if (slider) slider.value = defaults[param];
+            if (display) display.textContent = defaults[param].toFixed(2);
+        });
+    });
+
+    // Copy config button
+    copyBtn.addEventListener('click', () => {
+        const config = `window.tellusProxy = {
+    t_x: ${window.tellusProxy.t_x.toFixed(2)},
+    t_y: ${window.tellusProxy.t_y.toFixed(2)},
+    t_z: ${window.tellusProxy.t_z.toFixed(2)},
+    t_scale: ${window.tellusProxy.t_scale.toFixed(2)},
+    t_rotX: ${window.tellusProxy.t_rotX.toFixed(2)},
+    t_rotY: ${window.tellusProxy.t_rotY.toFixed(2)},
+    t_opacity: ${window.tellusProxy.t_opacity.toFixed(2)},
+    t_mouseFollow: ${window.tellusProxy.t_mouseFollow.toFixed(2)},
+    t_ambientIntensity: ${window.tellusProxy.t_ambientIntensity.toFixed(2)},
+    t_directionalIntensity: ${window.tellusProxy.t_directionalIntensity.toFixed(2)},
+    t_fillIntensity: ${window.tellusProxy.t_fillIntensity.toFixed(2)},
+    t_pointIntensity: ${window.tellusProxy.t_pointIntensity.toFixed(2)}
+};`;
+
+        navigator.clipboard.writeText(config).then(() => {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✓ Copiado';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        });
+    });
+}
+
+/* =========================================
+   PANEL DE CONTROLES PARA PÁJAROS DE INTRO
+   ========================================= */
+function initializeIntroBirdsControlPanel() {
+    const panel = document.getElementById('intro-birds-controls-panel');
+    const toggleBtn = document.getElementById('toggle-intro-controls');
+    const resetBtn = document.getElementById('reset-intro-controls');
+    const copyBtn = document.getElementById('copy-intro-config');
+    const controlsContent = document.querySelector('.intro-birds-content');
+
+    // Valores por defecto (copiar de introBirdConfig)
+    const defaults = {
+        b1_x_init: 0,
+        b1_y_init: 0,
+        b1_x_final: 0,
+        b1_y_final: 10,
+        b1_scale_final: 1,
+
+        b2_x_init: -500,
+        b2_y_init: 0,
+        b2_x_final: -500,
+        b2_y_final: 10,
+        b2_scale_final: 1,
+
+        b3_x_init: 0,
+        b3_y_init: 0,
+        b3_x_final: 100,
+        b3_y_final: 10,
+        b3_scale_final: 1,
+
+        timing_duration: 4.5,
+        timing_b1_start: 0,
+        timing_b2_start: 0.5,
+        timing_b3_start: 1.0
+    };
+
+    // Mapeo de parámetros
+    const sliderParams = Object.keys(defaults);
+
+    // Conectar sliders con introBirdConfig
+    sliderParams.forEach(param => {
+        const slider = document.getElementById(`${param}-slider`);
+        const display = document.getElementById(`${param}-display`);
+
+        if (slider && display) {
+            slider.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                display.textContent = value.toFixed(2);
+
+                // Actualizar introBirdConfig
+                if (param.includes('_init')) {
+                    const birdKey = param.match(/b\d/)[0];
+                    const axis = param.includes('_x') ? 'x' : 'y';
+                    window.introBirdConfig.initial[param] = value;
+                } else if (param.includes('_final')) {
+                    const birdNum = param.match(/b\d/)[0];
+                    const axis = param.includes('_x') ? 'x' : param.includes('_y') ? 'y' : 'scale';
+                    window.introBirdConfig.final[birdNum][axis] = value;
+                } else if (param.includes('timing_')) {
+                    const timingKey = param.replace('timing_', '');
+                    window.introBirdConfig.timings[timingKey] = value;
+                }
+
+                // Actualizar birdProxy para cambios en tiempo real
+                updateBirdProxyFromIntroConfig();
+            });
+
+            // Inicializar display
+            const currentValue = defaults[param];
+            slider.value = currentValue;
+            display.textContent = currentValue.toFixed(2);
+        }
+    });
+
+    // Toggle panel visibility
+    toggleBtn.addEventListener('click', () => {
+        controlsContent.classList.toggle('hidden');
+        toggleBtn.textContent = controlsContent.classList.contains('hidden') ? '+' : '−';
+    });
+
+    // Reset button
+    resetBtn.addEventListener('click', () => {
+        sliderParams.forEach(param => {
+            const slider = document.getElementById(`${param}-slider`);
+            const display = document.getElementById(`${param}-display`);
+            const value = defaults[param];
+            if (slider) slider.value = value;
+            if (display) display.textContent = value.toFixed(2);
+        });
+        // Reconstruir introBirdConfig desde defaults
+        window.introBirdConfig.initial.b1_x = defaults.b1_x_init;
+        window.introBirdConfig.initial.b1_y = defaults.b1_y_init;
+        window.introBirdConfig.initial.b2_x = defaults.b2_x_init;
+        window.introBirdConfig.initial.b2_y = defaults.b2_y_init;
+        window.introBirdConfig.initial.b3_x = defaults.b3_x_init;
+        window.introBirdConfig.initial.b3_y = defaults.b3_y_init;
+
+        window.introBirdConfig.final.b1.x = defaults.b1_x_final;
+        window.introBirdConfig.final.b1.y = defaults.b1_y_final;
+        window.introBirdConfig.final.b1.scale = defaults.b1_scale_final;
+        window.introBirdConfig.final.b2.x = defaults.b2_x_final;
+        window.introBirdConfig.final.b2.y = defaults.b2_y_final;
+        window.introBirdConfig.final.b2.scale = defaults.b2_scale_final;
+        window.introBirdConfig.final.b3.x = defaults.b3_x_final;
+        window.introBirdConfig.final.b3.y = defaults.b3_y_final;
+        window.introBirdConfig.final.b3.scale = defaults.b3_scale_final;
+
+        window.introBirdConfig.timings.duration = defaults.timing_duration;
+        window.introBirdConfig.timings.b1_start = defaults.timing_b1_start;
+        window.introBirdConfig.timings.b2_start = defaults.timing_b2_start;
+        window.introBirdConfig.timings.b3_start = defaults.timing_b3_start;
+
+        updateBirdProxyFromIntroConfig();
+    });
+
+    // Copy config button
+    copyBtn.addEventListener('click', () => {
+        const cfg = window.introBirdConfig;
+        const code = `window.introBirdConfig = {
+    initial: {
+        b1_x: ${cfg.initial.b1_x.toFixed(2)},
+        b1_y: ${cfg.initial.b1_y.toFixed(2)},
+        b1_z: ${cfg.initial.b1_z.toFixed(2)},
+        b1_scale: ${cfg.initial.b1_scale.toFixed(2)},
+        b1_overrideRotX: ${cfg.initial.b1_overrideRotX.toFixed(2)},
+        b1_overrideRotY: ${cfg.initial.b1_overrideRotY.toFixed(2)},
+        b1_overrideRotZ: ${cfg.initial.b1_overrideRotZ.toFixed(2)},
+
+        b2_x: ${cfg.initial.b2_x.toFixed(2)},
+        b2_y: ${cfg.initial.b2_y.toFixed(2)},
+        b2_z: ${cfg.initial.b2_z.toFixed(2)},
+        b2_scale: ${cfg.initial.b2_scale.toFixed(2)},
+        b2_overrideRotX: ${cfg.initial.b2_overrideRotX.toFixed(2)},
+        b2_overrideRotY: ${cfg.initial.b2_overrideRotY.toFixed(2)},
+        b2_overrideRotZ: ${cfg.initial.b2_overrideRotZ.toFixed(2)},
+
+        b3_x: ${cfg.initial.b3_x.toFixed(2)},
+        b3_y: ${cfg.initial.b3_y.toFixed(2)},
+        b3_z: ${cfg.initial.b3_z.toFixed(2)},
+        b3_scale: ${cfg.initial.b3_scale.toFixed(2)},
+        b3_overrideRotX: ${cfg.initial.b3_overrideRotX.toFixed(2)},
+        b3_overrideRotY: ${cfg.initial.b3_overrideRotY.toFixed(2)},
+        b3_overrideRotZ: ${cfg.initial.b3_overrideRotZ.toFixed(2)},
+
+        decompose: ${cfg.initial.decompose.toFixed(2)},
+        rotationY: ${cfg.initial.rotationY.toFixed(2)},
+        rotationX: ${cfg.initial.rotationX.toFixed(2)},
+        rotationZ: ${cfg.initial.rotationZ.toFixed(2)}
+    },
+
+    final: {
+        b1: { x: ${cfg.final.b1.x.toFixed(2)}, y: ${cfg.final.b1.y.toFixed(2)}, z: ${cfg.final.b1.z.toFixed(2)}, scale: ${cfg.final.b1.scale.toFixed(2)} },
+        b2: { x: ${cfg.final.b2.x.toFixed(2)}, y: ${cfg.final.b2.y.toFixed(2)}, z: ${cfg.final.b2.z.toFixed(2)}, scale: ${cfg.final.b2.scale.toFixed(2)} },
+        b3: { x: ${cfg.final.b3.x.toFixed(2)}, y: ${cfg.final.b3.y.toFixed(2)}, z: ${cfg.final.b3.z.toFixed(2)}, scale: ${cfg.final.b3.scale.toFixed(2)} }
+    },
+
+    timings: {
+        b1_start: ${cfg.timings.b1_start.toFixed(2)},
+        b2_start: ${cfg.timings.b2_start.toFixed(2)},
+        b3_start: ${cfg.timings.b3_start.toFixed(2)},
+        duration: ${cfg.timings.duration.toFixed(2)}
+    }
+};`;
+
+        navigator.clipboard.writeText(code).then(() => {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✓ Copiado';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        });
+    });
+}
+
+// Helper para actualizar birdProxy desde introBirdConfig (en tiempo real)
+function updateBirdProxyFromIntroConfig() {
+    const cfg = window.introBirdConfig;
+    Object.assign(window.birdProxy, cfg.initial);
+    // También actualizar los valores finales en birdProxy si es necesario
+}
+
 // Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', initializeTellusModel);
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTellusModel();
+    initializeTellusControlPanel();
+    initializeIntroBirdsControlPanel();
+});
