@@ -1,6 +1,6 @@
-import * as THREE from 'https://cdn.skypack.dev/three@0.136.0/build/three.module.js';
+// THREE is loaded globally from CDN
 
-export class BirdFlockScene {
+class BirdFlockScene {
     constructor(container) {
         this.container = container;
         this.scene = new THREE.Scene();
@@ -242,3 +242,6 @@ export class BirdFlockScene {
         return geometry;
     }
 }
+
+// Expose class globally for use in script.js
+window.BirdViewer = BirdFlockScene;
