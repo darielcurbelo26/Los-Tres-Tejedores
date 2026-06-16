@@ -426,9 +426,13 @@ window.BirdViewer = class BirdViewer {
                 const rotTime = time + bird.userData.timeOffset;
                 const boomerangY = Math.sin(rotTime * 0.4) * 0.35;
                 const boomerangX = Math.sin(rotTime * 0.2) * 0.1;
-                
-                const targetRotY = bird.userData.overrideRotY !== undefined ? bird.userData.overrideRotY : bird.userData.baseRotY + boomerangY + (this.mouseX * 0.5);
-                const targetRotX = bird.userData.overrideRotX !== undefined ? bird.userData.overrideRotX : bird.userData.baseRotX + boomerangX + (-this.mouseY * 0.3);
+
+                // Desactivar movimiento de ratón durante intro
+                const mouseInfluenceX = window.isIntroActive ? 0 : this.mouseX * 0.5;
+                const mouseInfluenceY = window.isIntroActive ? 0 : -this.mouseY * 0.3;
+
+                const targetRotY = bird.userData.overrideRotY !== undefined ? bird.userData.overrideRotY : bird.userData.baseRotY + boomerangY + mouseInfluenceX;
+                const targetRotX = bird.userData.overrideRotX !== undefined ? bird.userData.overrideRotX : bird.userData.baseRotX + boomerangX + mouseInfluenceY;
                 
                 bird.rotation.y += (targetRotY - bird.rotation.y) * 0.03;
                 bird.rotation.x += (targetRotX - bird.rotation.x) * 0.03;

@@ -608,8 +608,10 @@ gsap.registerPlugin(ScrollTrigger);
 let mainCtx = null;
 
 let introBirdViewer = null;
+window.isIntroActive = false;  // Bandera para desactivar ratón durante intro
 
 function initIntroSequence() {
+    window.isIntroActive = true;  // Activar durante intro
     // 1. Inicializar el audio ambiente y música para que capte la primera interacción bubbled
     setupAudio();
 
@@ -671,6 +673,7 @@ function initIntroSequence() {
                 opacity: 0,
                 duration: 1.2,
                 onComplete: () => {
+                    window.isIntroActive = false;  // Desactivar bandera de intro
                     // Limpiar recursos WebGL de la intro inmediatamente para evitar saturación de contexto GPU
                     if (introBirdViewer) {
                         introBirdViewer.destroy();
