@@ -703,6 +703,42 @@ function initLoader() {
 
 initLoader();
 
+// Detectar fondo debajo del logo y ajustar color para que difference funcione
+function updateLogoColor() {
+    const logoEl = document.querySelector('.header-logo');
+    if (!logoEl) return;
+
+    // Obtener color de fondo debajo del logo
+    const rect = logoEl.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    // Encontrar elemento debajo (ignorar el logo mismo)
+    const elementBelow = document.elementFromPoint(x, y);
+    if (!elementBelow) return;
+
+    const bgColor = window.getComputedStyle(elementBelow).backgroundColor;
+    const rgb = bgColor.match(/\d+/g);
+    if (!rgb || rgb.length < 3) return;
+
+    // Calcular luminancia (qué tan claro es el fondo)
+    const [r, g, b] = rgb.map(Number);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // Ajustar color del logo: si fondo claro → logo oscuro, si oscuro → logo claro
+    const root = document.documentElement;
+    if (luminance > 0.5) {
+        root.style.setProperty('--logo-fill', '#121212');
+        root.style.setProperty('--logo-stroke', '#121212');
+    } else {
+        root.style.setProperty('--logo-fill', '#f7f5f0');
+        root.style.setProperty('--logo-stroke', '#f7f5f0');
+    }
+}
+
+window.addEventListener('load', updateLogoColor);
+window.addEventListener('scroll', updateLogoColor);
+
 // Recalcular en resize (con debounce) para que el pin y los start/end no se descuadren.
 let resizeTimer;
 window.addEventListener('resize', () => {
