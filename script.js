@@ -63,9 +63,9 @@ window.introBirdConfig = {
 
     // Posiciones finales: los tres pájaros se agrupan en el centro.
     final: {
-        b1: { x:    0, y:  0, z: 0, scale: 1, rotX: 0, rotY: 1, rotZ: 0 }, // centro
+        b1: { x:    0, y:  0, z: 0, scale: 1, rotX: 0, rotY: 0, rotZ: 0 }, // centro
         b2: { x: -500, y:  120, z: 0, scale: 0.55, rotX: 0, rotY: 0, rotZ: 0 }, // izquierda
-        b3: { x:  450, y:  120, z: 0, scale: 0.65, rotX: -2000, rotY: 0, rotZ: 0 }  // derecha
+        b3: { x:  450, y:  120, z: 0, scale: 0.65, rotX: 0, rotY: 0, rotZ: 0 }  // derecha
     },
 
     // Timings de entrada escalonada
