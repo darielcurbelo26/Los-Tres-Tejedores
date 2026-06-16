@@ -5,13 +5,15 @@
       "name": "Python static server (port 5502)",
       "runtimeExecutable": "py",
       "runtimeArgs": ["-m", "http.server", "5502"],
-      "port": 5502
+      "port": 5502,
+      "autoPort": true
     },
     {
       "name": "npx serve (port 5501)",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "-l", "5501", "."],
-      "port": 5501
+      "port": 5501,
+      "autoPort": true
     }
   ]
 }
