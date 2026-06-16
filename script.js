@@ -50,9 +50,9 @@ window.introBirdConfig = {
     // Estado inicial (fuera de pantalla)
     initial: {
         b1_x: 0,
-        b1_y: -600,
-        b1_z: -200,
-        b1_scale: 0.2,
+        b1_y: 0,
+        b1_z: -180,
+        b1_scale: 0.0,
         b1_overrideRotX: 9999,
         b1_overrideRotY: 9999,
         b1_overrideRotZ: 9999,
