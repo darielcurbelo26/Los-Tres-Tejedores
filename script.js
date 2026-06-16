@@ -1169,6 +1169,86 @@ function initLoader() {
     requestAnimationFrame(tick);
 }
 
+/* =========================================
+   PANEL DE CONTROL PARA INTRO (Debug)
+   ========================================= */
+function setupIntroPanelControls() {
+    const panel = document.getElementById('intro-debug-panel');
+    const toggleBtn = document.getElementById('toggle-debug-panel');
+    const codeOutput = document.getElementById('code-output');
+    const copyBtn = document.getElementById('copy-code-btn');
+
+    // Toggle panel visibility
+    toggleBtn.addEventListener('click', () => {
+        panel.classList.toggle('hidden');
+    });
+
+    // Create range inputs for all bird parameters
+    const params = [
+        'b1_x', 'b1_y', 'b1_z', 'b1_scale',
+        'b2_x', 'b2_y', 'b2_z', 'b2_scale',
+        'b3_x', 'b3_y', 'b3_z', 'b3_scale'
+    ];
+
+    params.forEach(param => {
+        const rangeEl = document.getElementById(`range-${param}`);
+        const valueEl = document.getElementById(`val-${param}`);
+
+        if (rangeEl && valueEl) {
+            rangeEl.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                valueEl.textContent = value.toFixed(1);
+                updateCodeOutput();
+            });
+        }
+    });
+
+    // Copy button
+    copyBtn.addEventListener('click', () => {
+        codeOutput.select();
+        document.execCommand('copy');
+        copyBtn.textContent = '✓ Copiado';
+        setTimeout(() => {
+            copyBtn.textContent = 'Copiar';
+        }, 2000);
+    });
+
+    // Update code output based on slider values
+    function updateCodeOutput() {
+        const values = {};
+        params.forEach(param => {
+            const rangeEl = document.getElementById(`range-${param}`);
+            if (rangeEl) {
+                values[param] = parseFloat(rangeEl.value);
+            }
+        });
+
+        const code = `window.introBirdConfig.initial = {
+    b1_x: ${values.b1_x},
+    b1_y: ${values.b1_y},
+    b1_z: ${values.b1_z},
+    b1_scale: ${values.b1_scale},
+
+    b2_x: ${values.b2_x},
+    b2_y: ${values.b2_y},
+    b2_z: ${values.b2_z},
+    b2_scale: ${values.b2_scale},
+
+    b3_x: ${values.b3_x},
+    b3_y: ${values.b3_y},
+    b3_z: ${values.b3_z},
+    b3_scale: ${values.b3_scale}
+};`;
+
+        codeOutput.textContent = code;
+    }
+
+    // Initial code output
+    updateCodeOutput();
+}
+
+setupIntroPanelControls();
+
 initLoader();
 
 // Detectar fondo debajo del logo y ajustar color para que difference funcione
