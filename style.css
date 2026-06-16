@@ -686,9 +686,9 @@ body {
 :root {
     /* ---- FONDO: textos y arcos de trazo (edita aquí TODO el fondo) ---- */
     --bg-stroke-width: 1px;              /* grosor de trazo de textos y arcos de fondo */
-    --bg-stroke-opacity: 0.4;               /* opacidad de textos y arcos de fondo */
+    --bg-stroke-opacity: 1;               /* opacidad de textos y arcos de fondo */
     --bg-stroke-color: var(--color-secondary); /* color de trazo de textos y arcos de fondo */
-    --bg-text-size: 340px;                  /* tamaño de los textos gigantes (viewBox 1000x600) */
+    --bg-text-size: 40rem;                  /* tamaño de los textos gigantes (viewBox 1000x600) */
     --crear-arch-opacity: 0.4;              /* opacidad específica de los arcos de la sección Crear */
 
     /* ---- TÍTULOS PRINCIPALES de sección (Rol, Descargar app...) ---- */
@@ -1692,7 +1692,7 @@ body {
     font-family: var(--font-seasons);
     font-weight: 700;
     font-style: italic;
-    font-size: 1.25rem;
+    font-size: 2rem;
     color: var(--color-white);
     white-space: nowrap;
     pointer-events: none;
@@ -1749,7 +1749,7 @@ body {
     position: fixed;
     top: 1rem;
     left: 1rem;
-    z-index: 99999;
+    z-index: 999999;
     background: rgba(20, 20, 20, 0.95);
     border: 1px solid var(--color-secondary);
     border-radius: 8px;
@@ -1766,7 +1766,7 @@ body {
     position: fixed;
     top: 1rem;
     left: 1rem;
-    z-index: 99999;
+    z-index: 999999;
     background: rgba(20, 20, 20, 0.95);
     border: 1px solid var(--color-secondary);
     border-radius: 50%;
