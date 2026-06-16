@@ -1169,6 +1169,7 @@ body {
 .nav-img {
     height: auto !important;
     width: auto;
+    max-width: 500px;
 }
 
 .popup-img {
@@ -1506,7 +1507,7 @@ body {
     box-sizing: border-box;
     background-color: var(--color-white); /* Cream #FFD7A9 from DS */
     color: var(--color-black); /* Dark charcoal #141414 from DS */
-    padding: 4rem var(--padding-global);
+    padding: 2rem var(--padding-global);
     border-radius: 4rem 4rem 0 0;
     z-index: 250;
 }
