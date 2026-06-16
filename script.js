@@ -57,7 +57,7 @@ window.introBirdConfig = {
         b1_overrideRotY: 10,
         b1_overrideRotZ: 0,
 
-        b2_x: -500,
+        b2_x: -800,
         b2_y: 600,
         b2_z: -200,
         b2_scale: 0.0,
