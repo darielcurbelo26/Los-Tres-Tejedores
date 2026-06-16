@@ -1682,6 +1682,22 @@ body {
     transition: opacity 1.2s ease-in-out;
 }
 
+/* Título de la intro (elemento separado del hero) */
+#intro-title {
+    position: absolute;
+    top: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100001;
+    font-family: var(--font-seasons);
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--color-white);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
 .intro-birds-container {
     position: absolute;
     inset: 0;
@@ -1691,7 +1707,7 @@ body {
 
 .intro-ui-overlay {
     position: absolute;
-    top: 50%;
+    top: 9%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 100000;

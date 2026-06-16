@@ -73,17 +73,32 @@ window.introBirdConfig = {
 
     // Posiciones/escalas finales al ensamblar
     final: {
-        b1: { y: 50, z: 0, scale: 1 },
-        b2: { y: 0, z: 0, scale: 0.55 },
-        b3: { y: 0, z: 0, scale: 0.65 }
+        b1: {
+            x: 0,
+            y: 50,
+            z: 0,
+            scale: 1
+        },
+        b2: {
+            x: -500,
+            y: 0,
+            z: 0,
+            scale: 0.55
+        },
+        b3: {
+            x: 500,
+            y: 0,
+            z: 0,
+            scale: 0.65
+        }
     },
 
     // Timings de entrada escalonada
     timings: {
-        b1_start: 0,    // Pájaro 1 empieza en t=0
-        b2_start: 0.5,  // Pájaro 2 empieza en t=0.5s
-        b3_start: 1.0,  // Pájaro 3 empieza en t=1.0s
-        duration: 4.5   // Duración de cada animación
+        b1_start: 0, // Pájaro 1 empieza en t=0
+        b2_start: 0.5, // Pájaro 2 empieza en t=0.5s
+        b3_start: 1.0, // Pájaro 3 empieza en t=1.0s
+        duration: 4.5 // Duración de cada animación
     }
 };
 
@@ -165,7 +180,7 @@ function buildMasterTimeline() {
         scrollTrigger: {
             trigger: ".pinned-canvas",
             start: "top top",
-            end: "bottom bottom",     // el recorrido lo da la altura 700% + el .pinned-sticky
+            end: "bottom bottom", // el recorrido lo da la altura 700% + el .pinned-sticky
             scrub: SCRUB,
             invalidateOnRefresh: true // recalcula valores en cada refresh (resize) sin descuadres
             // Sin pin de GSAP: el fijado lo hace .pinned-sticky (position:sticky), igual que mapa/crear
@@ -173,80 +188,176 @@ function buildMasterTimeline() {
     });
 
     tl
-    // ================= SECCIÓN 1 (Hero) =================
-    .to({}, { duration: 0.8 }) // Pausa inicial para contemplar el slider
+        // ================= SECCIÓN 1 (Hero) =================
+        .to({}, {
+            duration: 0.8
+        }) // Pausa inicial para contemplar el slider
 
-    // ================= SECCIÓN 2 (Frase) — efecto CINE =================
-    // Al entrar: barras letterbox, fondo más oscuro, y se ocultan cabecera + frase inferior
-    .to(".second-section", { opacity: 1, duration: 0.3 }, "cine_in")
-    .fromTo(".cinema-bar-top", { yPercent: -100 }, { yPercent: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
-    .fromTo(".cinema-bar-bottom", { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
-    .to(".bg-slider", { filter: "brightness(0.7)", duration: 1.2, ease: "power3.inOut" }, "cine_in")
-    // La cabecera se desliza hacia ARRIBA y la frase inferior hacia ABAJO (suave, sin saltos)
-    .to(".app-header", { yPercent: -100, opacity: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
-    .to(".fixed-bottom-title", { yPercent: 100, opacity: 0, duration: 1.2, ease: "power3.inOut" }, "cine_in")
-    // fromTo explícito: el .from() dejaba las líneas atascadas en opacity:0/blur
-    .fromTo(".phrase-line",
-        { opacity: 0, filter: "blur(12px)" },
-        { opacity: 1, filter: "blur(0px)", duration: 1.4, stagger: 0.3, ease: "power2.out" }
-    )
-    .to({}, { duration: 1.5 }) // Pausa para leer
-    // Al pasar a la siguiente sección: las barras de cine se retiran a su lugar
-    .to(".second-section", { opacity: 0, duration: 1.2 }, "cine_out")
-    .to(".cinema-bar-top", { yPercent: -100, duration: 1.2, ease: "power3.inOut" }, "cine_out")
-    .to(".cinema-bar-bottom", { yPercent: 100, duration: 1.2, ease: "power3.inOut" }, "cine_out")
-    .to(".bg-slider", { filter: "brightness(1)", duration: 1.2, ease: "power3.inOut" }, "cine_out")
-    .to(".app-header", { yPercent: 0, opacity: 1, duration: 1.2, ease: "power3.inOut" }, "cine_out")
+        // ================= SECCIÓN 2 (Frase) — efecto CINE =================
+        // Al entrar: barras letterbox, fondo más oscuro, y se ocultan cabecera + frase inferior
+        .to(".second-section", {
+            opacity: 1,
+            duration: 0.3
+        }, "cine_in")
+        .fromTo(".cinema-bar-top", {
+            yPercent: -100
+        }, {
+            yPercent: 0,
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_in")
+        .fromTo(".cinema-bar-bottom", {
+            yPercent: 100
+        }, {
+            yPercent: 0,
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_in")
+        .to(".bg-slider", {
+            filter: "brightness(0.7)",
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_in")
+        // La cabecera se desliza hacia ARRIBA y la frase inferior hacia ABAJO (suave, sin saltos)
+        .to(".app-header", {
+            yPercent: -100,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_in")
+        .to(".fixed-bottom-title", {
+            yPercent: 100,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_in")
+        // fromTo explícito: el .from() dejaba las líneas atascadas en opacity:0/blur
+        .fromTo(".phrase-line", {
+            opacity: 0,
+            filter: "blur(12px)"
+        }, {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 1.4,
+            stagger: 0.3,
+            ease: "power2.out"
+        })
+        .to({}, {
+            duration: 1.5
+        }) // Pausa para leer
+        // Al pasar a la siguiente sección: las barras de cine se retiran a su lugar
+        .to(".second-section", {
+            opacity: 0,
+            duration: 1.2
+        }, "cine_out")
+        .to(".cinema-bar-top", {
+            yPercent: -100,
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_out")
+        .to(".cinema-bar-bottom", {
+            yPercent: 100,
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_out")
+        .to(".bg-slider", {
+            filter: "brightness(1)",
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_out")
+        .to(".app-header", {
+            yPercent: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: "power3.inOut"
+        }, "cine_out")
 
-    // ================= SECCIÓN 3 (Arcos) — se dibujan LENTO y permanecen =================
-    .to(".third-section", { opacity: 1, duration: 0.3 })
-    // El título inferior fijo se desvanece al entrar los arcos
-    .to(".fixed-bottom-title", { opacity: 0, duration: 0.5 }, "<")
-    // Dibuja los arcos SVG — más tiempo en pantalla
-    .to(section3ArchPaths, {
-        strokeDashoffset: 0,
-        duration: 5,        // construcción más lenta de los arcos
-        stagger: 0.1,
-        ease: "none"
-    })
-    .to({}, { duration: 1 }) // arcos solos un momento, ya completos
+        // ================= SECCIÓN 3 (Arcos) — se dibujan LENTO y permanecen =================
+        .to(".third-section", {
+            opacity: 1,
+            duration: 0.3
+        })
+        // El título inferior fijo se desvanece al entrar los arcos
+        .to(".fixed-bottom-title", {
+            opacity: 0,
+            duration: 0.5
+        }, "<")
+        // Dibuja los arcos SVG — más tiempo en pantalla
+        .to(section3ArchPaths, {
+            strokeDashoffset: 0,
+            duration: 5, // construcción más lenta de los arcos
+            stagger: 0.1,
+            ease: "none"
+        })
+        .to({}, {
+            duration: 1
+        }) // arcos solos un momento, ya completos
 
-    // ===== Textos de fondo se pintan ENCIMA de los arcos (pertenecen a la 4ª sección) =====
-    // Activamos la 4ª sección: los teléfonos siguen fuera de pantalla (fromTo más abajo).
-    .to(".fourth-section", { opacity: 1, duration: 0.3 })
-    .to(".fourth-section .bg-stroke-text-svg", {
-        attr: { "stroke-dashoffset": 0 },
-        duration: 8,          // textos de fondo se construyen más lento
-        stagger: 1,
-        ease: "power2.out"
-    })
-    .to({}, { duration: 0.8 }) // arcos + textos visibles juntos
+        // ===== Textos de fondo se pintan ENCIMA de los arcos (pertenecen a la 4ª sección) =====
+        // Activamos la 4ª sección: los teléfonos siguen fuera de pantalla (fromTo más abajo).
+        .to(".fourth-section", {
+            opacity: 1,
+            duration: 0.3
+        })
+        .to(".fourth-section .bg-stroke-text-svg", {
+            attr: {
+                "stroke-dashoffset": 0
+            },
+            duration: 8, // textos de fondo se construyen más lento
+            stagger: 1,
+            ease: "power2.out"
+        })
+        .to({}, {
+            duration: 0.8
+        }) // arcos + textos visibles juntos
 
-    // ================= SECCIÓN 4 (Teléfonos) — arcos y textos SIGUEN visibles =================
-    .to(".bg-slider", { opacity: 0, duration: 0.8 }, "entrada_telefonos")
-    .fromTo(".interface-wrapper",
-        { x: "100vw", rotation: 15, opacity: 0 },
-        { x: 0, rotation: 0, opacity: 1, duration: 1.4, stagger: 0.18, ease: "power3.out" },
-        "entrada_telefonos"
-    )
-    .to({}, { duration: 3.5 }) // Pausa para contemplar (aumentada de 1.5 a 3.5)
+        // ================= SECCIÓN 4 (Teléfonos) — arcos y textos SIGUEN visibles =================
+        .to(".bg-slider", {
+            opacity: 0,
+            duration: 0.8
+        }, "entrada_telefonos")
+        .fromTo(".interface-wrapper", {
+                x: "100vw",
+                rotation: 15,
+                opacity: 0
+            }, {
+                x: 0,
+                rotation: 0,
+                opacity: 1,
+                duration: 1.4,
+                stagger: 0.18,
+                ease: "power3.out"
+            },
+            "entrada_telefonos"
+        )
+        .to({}, {
+            duration: 3.5
+        }) // Pausa para contemplar (aumentada de 1.5 a 3.5)
 
-    // ===== Salida: los teléfonos suben y SOLO ENTONCES se van arcos + textos =====
-    .to(".interface-wrapper", {
-        y: "-110vh",
-        opacity: 0,
-        duration: 1.4,
-        stagger: 0.1,
-        ease: "power2.in"
-    }, "salida")
-    .to(".third-section", { opacity: 0, duration: 1.2 }, "salida")          // arcos se van con los teléfonos
-    // Los textos de fondo se DES-DIBUJAN (trazo inverso) al salir, no se desvanecen
-    .to(".fourth-section .bg-stroke-text-svg", {
-        attr: { "stroke-dashoffset": BG_STROKE_LENGTH },
-        duration: 1.2,
-        ease: "power2.in"
-    }, "salida")
-    .to(".fourth-section", { opacity: 0, duration: 0.3 });
+        // ===== Salida: los teléfonos suben y SOLO ENTONCES se van arcos + textos =====
+        .to(".interface-wrapper", {
+            y: "-110vh",
+            opacity: 0,
+            duration: 1.4,
+            stagger: 0.1,
+            ease: "power2.in"
+        }, "salida")
+        .to(".third-section", {
+            opacity: 0,
+            duration: 1.2
+        }, "salida") // arcos se van con los teléfonos
+        // Los textos de fondo se DES-DIBUJAN (trazo inverso) al salir, no se desvanecen
+        .to(".fourth-section .bg-stroke-text-svg", {
+            attr: {
+                "stroke-dashoffset": BG_STROKE_LENGTH
+            },
+            duration: 1.2,
+            ease: "power2.in"
+        }, "salida")
+        .to(".fourth-section", {
+            opacity: 0,
+            duration: 0.3
+        });
 }
 
 /* =========================================
@@ -263,102 +374,233 @@ function buildMapCrearTimeline() {
     });
 
     // --- FASE MAPA (t=0 -> 37.2) ---
-    
-    // Configuración inicial de la parte de Crear al inicio del timeline (t=0)
-    tl.set(".solid-red-arch", { width: "400vw", borderRadius: "5000vw 5000vw 0px 0px", opacity: 0 }, 0)
-    .set(".inverse-arch-mask", { width: "400vw", borderRadius: "5000vw 5000vw 0px 0px", opacity: 0 }, 0)
-    // x:0,y:0,xPercent:-50 → centrado SOLO por porcentaje. Si no, GSAP hereda el
-    // translate(-50%,-50%) del CSS como px (x=-50% del ancho) y lo SUMA al yPercent
-    // → doble traslación: "Crear" quedaba descentrado/elevado respecto a su arco.
-    .set(".center-card-wrapper", { x: 0, y: 0, xPercent: -50, yPercent: -54.5, scale: 2.3, opacity: 0 }, 0)
 
-    // A) APERTURA MAPA: de 0 a 200vmax (t=0 -> 6.0)
-    .fromTo(".animated-arch-container",
-        { width: 0, borderRadius: "500vw 500vw 0 0", opacity: 0, borderColor: "var(--color-secondary)" },
-        {
-            width: "200vmax",
-            borderRadius: "5000vw 5000vw 0 0",
-            borderColor: "transparent",
-            duration: 6,
+    // Configuración inicial de la parte de Crear al inicio del timeline (t=0)
+    tl.set(".solid-red-arch", {
+            width: "400vw",
+            borderRadius: "5000vw 5000vw 0px 0px",
+            opacity: 0
+        }, 0)
+        .set(".inverse-arch-mask", {
+            width: "400vw",
+            borderRadius: "5000vw 5000vw 0px 0px",
+            opacity: 0
+        }, 0)
+        // x:0,y:0,xPercent:-50 → centrado SOLO por porcentaje. Si no, GSAP hereda el
+        // translate(-50%,-50%) del CSS como px (x=-50% del ancho) y lo SUMA al yPercent
+        // → doble traslación: "Crear" quedaba descentrado/elevado respecto a su arco.
+        .set(".center-card-wrapper", {
+            x: 0,
+            y: 0,
+            xPercent: -50,
+            yPercent: -54.5,
+            scale: 2.3,
+            opacity: 0
+        }, 0)
+
+        // A) APERTURA MAPA: de 0 a 200vmax (t=0 -> 6.0)
+        .fromTo(".animated-arch-container", {
+                width: 0,
+                borderRadius: "500vw 500vw 0 0",
+                opacity: 0,
+                borderColor: "var(--color-secondary)"
+            }, {
+                width: "200vmax",
+                borderRadius: "5000vw 5000vw 0 0",
+                borderColor: "transparent",
+                duration: 6,
+                ease: "power2.inOut"
+            },
+            0
+        )
+        .to(".animated-arch-container", {
+            opacity: 1,
+            duration: 1.5,
+            ease: "power1.inOut"
+        }, 0)
+
+        // B) Fondo rojo aparece justo antes de entrar el grid (t=7.5 -> 8.5)
+        .to(".bg-red-layer", {
+            opacity: 1,
+            duration: 1,
+            ease: "power1.inOut"
+        }, 7.5)
+
+        // C) Entrada del Grid en ola (stagger) diagonal — POR ENCIMA del mapa (t=8.2 -> 10.7) + stagger
+        .fromTo(".burst-img", {
+                opacity: 0,
+                scale: 0
+            }, {
+                opacity: 1,
+                scale: 1,
+                duration: 2.5,
+                stagger: {
+                    amount: 11,
+                    grid: [6, 6],
+                    from: "start"
+                },
+                ease: "power2.out"
+            },
+            8.2
+        )
+
+        // D) SALIDA GRID: desaparece secuencialmente de forma que la última imagen a la derecha desaparece al final (t=23.7 -> 26.2) + stagger
+        .to(".burst-img", {
+            opacity: 0,
+            scale: 0,
+            duration: 2.5,
+            stagger: {
+                amount: 11,
+                grid: [6, 6],
+                from: "start"
+            }, // Stagger desde start para que la última foto a la derecha desaparezca al final
+            ease: "power2.in"
+        }, 23.7)
+
+        // --- FASE TRANSICIÓN Y CREAR (t=37.2 -> 56.7) ---
+
+        // E) Transición a Crear: las máscaras roja/beige se activan cubriendo el mapa (t=37.2 -> 38.7)
+        .to([".solid-red-arch", ".inverse-arch-mask"], {
+            opacity: 1,
+            duration: 1.5,
             ease: "power2.inOut"
-        },
-        0
-    )
-    .to(".animated-arch-container", { opacity: 1, duration: 1.5, ease: "power1.inOut" }, 0)
-    
-    // B) Fondo rojo aparece justo antes de entrar el grid (t=7.5 -> 8.5)
-    .to(".bg-red-layer", { opacity: 1, duration: 1, ease: "power1.inOut" }, 7.5)
-    
-    // C) Entrada del Grid en ola (stagger) diagonal — POR ENCIMA del mapa (t=8.2 -> 10.7) + stagger
-    .fromTo(".burst-img",
-        { opacity: 0, scale: 0 },
-        {
+        }, 37.2)
+        .to(".center-card-wrapper", {
+            opacity: 1,
+            duration: 1.5,
+            ease: "power2.inOut"
+        }, 37.2)
+
+        // FASE Crear 1: dibujar arcos SVG (t=38.7 -> 43.2)
+        .to(crearArchPaths, {
+            strokeDashoffset: 0,
+            duration: 4.5,
+            stagger: 0.08,
+            ease: "none"
+        }, 38.7)
+
+        // FASE Crear 2: textos de fondo (t=43.2 -> 47.2)
+        .to(".bg-words-crear .bg-stroke-dark-svg", {
+            attr: {
+                "stroke-dashoffset": 0
+            },
+            duration: 8,
+            stagger: 1,
+            ease: "power2.out"
+        }, 43.2)
+
+        // FASE Crear 3: rellenar "Crear" (t=47.2 -> 49.2)
+        .to(".crear-word-filled", {
+            clipPath: "inset(0 -20% 0 0)",
+            duration: 2,
+            ease: "power1.inOut"
+        }, 47.2)
+
+        // FASE Crear 4: máscaras se contraen hasta formar la tarjeta (t=49.2 -> 53.2)
+        .to(".solid-red-arch", {
+            width: archCardWidth,
+            borderRadius: "500vw 500vw 0px 0px",
+            duration: 4,
+            ease: "power2.inOut"
+        }, 49.2)
+        .to(".inverse-arch-mask", {
+            width: archCardWidth,
+            borderRadius: "500vw 500vw 0px 0px",
+            duration: 4,
+            ease: "power2.inOut"
+        }, 49.2)
+
+        // FASE Crear 5: central card baja a su posición final (t=52.7 -> 54.2)
+        // Centro real (yPercent:-50, sin px heredado): "Crear" queda alineado abajo igual que Compartir/Conectar
+        .to(".center-card-wrapper", {
+            scale: 1,
+            yPercent: -50,
+            duration: 1.5,
+            ease: "power2.inOut"
+        }, 52.7)
+
+        // FASE Crear 6: side cards emergen desde detrás (t=53.2 -> 55.2)
+        .fromTo(".side-arch-left", {
+            xPercent: 110,
+            opacity: 0,
+            scale: 0.9,
+            rotation: 0
+        }, {
+            xPercent: 0,
             opacity: 1,
             scale: 1,
-            duration: 2.5,
-            stagger: { amount: 11, grid: [6, 6], from: "start" },
-            ease: "power2.out"
-        },
-        8.2
-    )
-    
-    // D) SALIDA GRID: desaparece secuencialmente de forma que la última imagen a la derecha desaparece al final (t=23.7 -> 26.2) + stagger
-    .to(".burst-img", {
-        opacity: 0,
-        scale: 0,
-        duration: 2.5,
-        stagger: { amount: 11, grid: [6, 6], from: "start" }, // Stagger desde start para que la última foto a la derecha desaparezca al final
-        ease: "power2.in"
-    }, 23.7)
+            rotation: -6,
+            duration: 2,
+            ease: "power3.out"
+        }, 53.2)
+        .fromTo(".side-arch-right", {
+            xPercent: -110,
+            opacity: 0,
+            scale: 0.9,
+            rotation: 0
+        }, {
+            xPercent: 0,
+            opacity: 1,
+            scale: 1,
+            rotation: 6,
+            duration: 2,
+            ease: "power3.out"
+        }, 53.2)
 
-    // --- FASE TRANSICIÓN Y CREAR (t=37.2 -> 56.7) ---
-    
-    // E) Transición a Crear: las máscaras roja/beige se activan cubriendo el mapa (t=37.2 -> 38.7)
-    .to([".solid-red-arch", ".inverse-arch-mask"], { opacity: 1, duration: 1.5, ease: "power2.inOut" }, 37.2)
-    .to(".center-card-wrapper", { opacity: 1, duration: 1.5, ease: "power2.inOut" }, 37.2)
-    
-    // FASE Crear 1: dibujar arcos SVG (t=38.7 -> 43.2)
-    .to(crearArchPaths, { strokeDashoffset: 0, duration: 4.5, stagger: 0.08, ease: "none" }, 38.7)
-    
-    // FASE Crear 2: textos de fondo (t=43.2 -> 47.2)
-    .to(".bg-words-crear .bg-stroke-dark-svg", {
-        attr: { "stroke-dashoffset": 0 }, duration: 8, stagger: 1, ease: "power2.out"
-    }, 43.2)
-    
-    // FASE Crear 3: rellenar "Crear" (t=47.2 -> 49.2)
-    .to(".crear-word-filled", { clipPath: "inset(0 -20% 0 0)", duration: 2, ease: "power1.inOut" }, 47.2)
-    
-    // FASE Crear 4: máscaras se contraen hasta formar la tarjeta (t=49.2 -> 53.2)
-    .to(".solid-red-arch", { width: archCardWidth, borderRadius: "500vw 500vw 0px 0px", duration: 4, ease: "power2.inOut" }, 49.2)
-    .to(".inverse-arch-mask", { width: archCardWidth, borderRadius: "500vw 500vw 0px 0px", duration: 4, ease: "power2.inOut" }, 49.2)
-    
-    // FASE Crear 5: central card baja a su posición final (t=52.7 -> 54.2)
-    // Centro real (yPercent:-50, sin px heredado): "Crear" queda alineado abajo igual que Compartir/Conectar
-    .to(".center-card-wrapper", { scale: 1, yPercent: -50, duration: 1.5, ease: "power2.inOut" }, 52.7)
-    
-    // FASE Crear 6: side cards emergen desde detrás (t=53.2 -> 55.2)
-    .fromTo(".side-arch-left",
-        { xPercent: 110, opacity: 0, scale: 0.9, rotation: 0 },
-        { xPercent: 0, opacity: 1, scale: 1, rotation: -6, duration: 2, ease: "power3.out" }, 53.2)
-    .fromTo(".side-arch-right",
-        { xPercent: -110, opacity: 0, scale: 0.9, rotation: 0 },
-        { xPercent: 0, opacity: 1, scale: 1, rotation: 6, duration: 2, ease: "power3.out" }, 53.2)
-        
-    // Salida final: textos se des-dibujan al final (t=55.2 -> 56.7)
-    .to(".bg-words-crear .bg-stroke-dark-svg", {
-        attr: { "stroke-dashoffset": BG_STROKE_LENGTH },
-        duration: 1.5,
-        ease: "power2.in"
-    }, 55.2)
-    
-    // --- FASE SALIDA DE ARCOS (t=56.7 -> 59.7) ---
-    .to(".side-arch-left", { xPercent: -200, yPercent: -150, rotation: -30, opacity: 0, duration: 3, ease: "power2.inOut" }, 56.7)
-    .to(".side-arch-right", { xPercent: 200, yPercent: -150, rotation: 30, opacity: 0, duration: 3, ease: "power2.inOut" }, 56.7)
-    .to(".center-card-wrapper", { yPercent: -200, opacity: 0, duration: 3, ease: "power2.inOut" }, 56.7)
-    .to(".solid-red-arch", { yPercent: -200, opacity: 0, duration: 3, ease: "power2.inOut" }, 56.7)
-    .to(".inverse-arch-mask", { yPercent: -200, opacity: 0, duration: 3, ease: "power2.inOut" }, 56.7)
-    .to(".animated-arch-container", { opacity: 0, duration: 2, ease: "power1.inOut" }, 56.7)
-    .to(".bg-red-layer", { opacity: 0, duration: 2, ease: "power1.inOut" }, 56.7);
+        // Salida final: textos se des-dibujan al final (t=55.2 -> 56.7)
+        .to(".bg-words-crear .bg-stroke-dark-svg", {
+            attr: {
+                "stroke-dashoffset": BG_STROKE_LENGTH
+            },
+            duration: 1.5,
+            ease: "power2.in"
+        }, 55.2)
+
+        // --- FASE SALIDA DE ARCOS (t=56.7 -> 59.7) ---
+        .to(".side-arch-left", {
+            xPercent: -200,
+            yPercent: -150,
+            rotation: -30,
+            opacity: 0,
+            duration: 3,
+            ease: "power2.inOut"
+        }, 56.7)
+        .to(".side-arch-right", {
+            xPercent: 200,
+            yPercent: -150,
+            rotation: 30,
+            opacity: 0,
+            duration: 3,
+            ease: "power2.inOut"
+        }, 56.7)
+        .to(".center-card-wrapper", {
+            yPercent: -200,
+            opacity: 0,
+            duration: 3,
+            ease: "power2.inOut"
+        }, 56.7)
+        .to(".solid-red-arch", {
+            yPercent: -200,
+            opacity: 0,
+            duration: 3,
+            ease: "power2.inOut"
+        }, 56.7)
+        .to(".inverse-arch-mask", {
+            yPercent: -200,
+            opacity: 0,
+            duration: 3,
+            ease: "power2.inOut"
+        }, 56.7)
+        .to(".animated-arch-container", {
+            opacity: 0,
+            duration: 2,
+            ease: "power1.inOut"
+        }, 56.7)
+        .to(".bg-red-layer", {
+            opacity: 0,
+            duration: 2,
+            ease: "power1.inOut"
+        }, 56.7);
 }
 
 /* =========================================
@@ -414,50 +656,184 @@ function buildEighthSectionTimeline() {
     });
 
     // Configuración inicial de opacidad y posiciones en t=0 (popups más separados)
-    tl.set(".rol-phones-container img:nth-child(1)", { opacity: 0, yPercent: 120, y: 0 }, 0)
-      .set(".rol-phones-container img:nth-child(2)", { opacity: 0, yPercent: 120, y: 0 }, 0)
-      .set(".rol-phones-container img:nth-child(3)", { opacity: 0, yPercent: 120, y: 0 }, 0)
-      .set(".rol-popups-container .popup-asset", { opacity: 0 }, 0)
-      .set(".rol-popups-container .popup-left", { xPercent: -220, rotation: -20 }, 0)
-      .set(".rol-popups-container .popup-right", { xPercent: 220, rotation: 20 }, 0)
-      .set(".descargar-phone-container .phone-left-align", { opacity: 0, x: 0, xPercent: -50, yPercent: 120, rotation: 0 }, 0)
-      .set(".descargar-buttons-container", { opacity: 0, xPercent: 150 }, 0)
-      .to(".app-header", { yPercent: -100, opacity: 0, duration: 1.5, ease: "power2.inOut" }, 0)
+    tl.set(".rol-phones-container img:nth-child(1)", {
+            opacity: 0,
+            yPercent: 120,
+            y: 0
+        }, 0)
+        .set(".rol-phones-container img:nth-child(2)", {
+            opacity: 0,
+            yPercent: 120,
+            y: 0
+        }, 0)
+        .set(".rol-phones-container img:nth-child(3)", {
+            opacity: 0,
+            yPercent: 120,
+            y: 0
+        }, 0)
+        .set(".rol-popups-container .popup-asset", {
+            opacity: 0
+        }, 0)
+        .set(".rol-popups-container .popup-left", {
+            xPercent: -220,
+            rotation: -20
+        }, 0)
+        .set(".rol-popups-container .popup-right", {
+            xPercent: 220,
+            rotation: 20
+        }, 0)
+        .set(".descargar-phone-container .phone-left-align", {
+            opacity: 0,
+            x: 0,
+            xPercent: -50,
+            yPercent: 120,
+            rotation: 0
+        }, 0)
+        .set(".descargar-buttons-container", {
+            opacity: 0,
+            xPercent: 150
+        }, 0)
+        .to(".app-header", {
+            yPercent: -100,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power2.inOut"
+        }, 0)
 
-      // Fase 1: Dibujado de "Rol" (t=0 -> 3.0)
-      .to(rol, { attr: { "stroke-dashoffset": 0 }, duration: 3, ease: "power1.inOut" }, 0)
+        // Fase 1: Dibujado de "Rol" (t=0 -> 3.0)
+        .to(rol, {
+            attr: {
+                "stroke-dashoffset": 0
+            },
+            duration: 3,
+            ease: "power1.inOut"
+        }, 0)
 
-      // Fase 2: Entrada de los teléfonos como bloques staggered y desplazados en Y (t=3.0 -> 4.9)
-      .to(".rol-phones-container img:nth-child(1)", { opacity: 1, yPercent: 0, y: 25, duration: 1.5, ease: "power2.out" }, 3.0)
-      .to(".rol-phones-container img:nth-child(2)", { opacity: 1, yPercent: 0, y: -25, duration: 1.5, ease: "power2.out" }, 3.2)
-      .to(".rol-phones-container img:nth-child(3)", { opacity: 1, yPercent: 0, y: 25, duration: 1.5, ease: "power2.out" }, 3.4)
-      // Atenuar texto de fondo para no colisionar con la legibilidad
-      .to(rol, { opacity: 0.15, duration: 1 }, 3.0)
+        // Fase 2: Entrada de los teléfonos como bloques staggered y desplazados en Y (t=3.0 -> 4.9)
+        .to(".rol-phones-container img:nth-child(1)", {
+            opacity: 1,
+            yPercent: 0,
+            y: 25,
+            duration: 1.5,
+            ease: "power2.out"
+        }, 3.0)
+        .to(".rol-phones-container img:nth-child(2)", {
+            opacity: 1,
+            yPercent: 0,
+            y: -25,
+            duration: 1.5,
+            ease: "power2.out"
+        }, 3.2)
+        .to(".rol-phones-container img:nth-child(3)", {
+            opacity: 1,
+            yPercent: 0,
+            y: 25,
+            duration: 1.5,
+            ease: "power2.out"
+        }, 3.4)
+        // Atenuar texto de fondo para no colisionar con la legibilidad
+        .to(rol, {
+            opacity: 0.15,
+            duration: 1
+        }, 3.0)
 
-      // Fase 3: Salida lenta de teléfonos hacia arriba de forma escalonada (t=7.5 -> 9.9)
-      .to(".rol-phones-container img:nth-child(1)", { opacity: 0, yPercent: -120, y: 0, duration: 2, ease: "power2.in" }, 7.5)
-      .to(".rol-phones-container img:nth-child(2)", { opacity: 0, yPercent: -120, y: 0, duration: 2, ease: "power2.in" }, 7.7)
-      .to(".rol-phones-container img:nth-child(3)", { opacity: 0, yPercent: -120, y: 0, duration: 2, ease: "power2.in" }, 7.9)
+        // Fase 3: Salida lenta de teléfonos hacia arriba de forma escalonada (t=7.5 -> 9.9)
+        .to(".rol-phones-container img:nth-child(1)", {
+            opacity: 0,
+            yPercent: -120,
+            y: 0,
+            duration: 2,
+            ease: "power2.in"
+        }, 7.5)
+        .to(".rol-phones-container img:nth-child(2)", {
+            opacity: 0,
+            yPercent: -120,
+            y: 0,
+            duration: 2,
+            ease: "power2.in"
+        }, 7.7)
+        .to(".rol-phones-container img:nth-child(3)", {
+            opacity: 0,
+            yPercent: -120,
+            y: 0,
+            duration: 2,
+            ease: "power2.in"
+        }, 7.9)
 
-      // Fase 4: Entrada lenta de Popups Laterales desde más afuera (t=9.5 -> 11.5)
-      .to(".rol-popups-container .popup-left", { opacity: 1, xPercent: 0, rotation: 0, duration: 2, ease: "power2.out" }, 9.5)
-      .to(".rol-popups-container .popup-right", { opacity: 1, xPercent: 0, rotation: 0, duration: 2, ease: "power2.out" }, 9.5)
+        // Fase 4: Entrada lenta de Popups Laterales desde más afuera (t=9.5 -> 11.5)
+        .to(".rol-popups-container .popup-left", {
+            opacity: 1,
+            xPercent: 0,
+            rotation: 0,
+            duration: 2,
+            ease: "power2.out"
+        }, 9.5)
+        .to(".rol-popups-container .popup-right", {
+            opacity: 1,
+            xPercent: 0,
+            rotation: 0,
+            duration: 2,
+            ease: "power2.out"
+        }, 9.5)
 
-      // Fase 5: Salida lenta de Popups y Desdibujado de "Rol" (t=14.5 -> 16.5) (Pausa amplia de 3s en medio)
-      .to(".rol-popups-container .popup-left", { opacity: 0, xPercent: -220, rotation: -20, duration: 2, ease: "power2.in" }, 14.5)
-      .to(".rol-popups-container .popup-right", { opacity: 0, xPercent: 220, rotation: 20, duration: 2, ease: "power2.in" }, 14.5)
-      .to(rol, { attr: { "stroke-dashoffset": BG_STROKE_LENGTH }, opacity: 0, duration: 2, ease: "power2.inOut" }, 14.5)
+        // Fase 5: Salida lenta de Popups y Desdibujado de "Rol" (t=14.5 -> 16.5) (Pausa amplia de 3s en medio)
+        .to(".rol-popups-container .popup-left", {
+            opacity: 0,
+            xPercent: -220,
+            rotation: -20,
+            duration: 2,
+            ease: "power2.in"
+        }, 14.5)
+        .to(".rol-popups-container .popup-right", {
+            opacity: 0,
+            xPercent: 220,
+            rotation: 20,
+            duration: 2,
+            ease: "power2.in"
+        }, 14.5)
+        .to(rol, {
+            attr: {
+                "stroke-dashoffset": BG_STROKE_LENGTH
+            },
+            opacity: 0,
+            duration: 2,
+            ease: "power2.inOut"
+        }, 14.5)
 
-      // Fase 6: Dibujado de "Descargar app" (t=16.5 -> 19.5)
-      .to(desc, { attr: { "stroke-dashoffset": 0 }, opacity: 1, duration: 3, ease: "power1.inOut" }, 16.5)
+        // Fase 6: Dibujado de "Descargar app" (t=16.5 -> 19.5)
+        .to(desc, {
+            attr: {
+                "stroke-dashoffset": 0
+            },
+            opacity: 1,
+            duration: 3,
+            ease: "power1.inOut"
+        }, 16.5)
 
-      // Fase 7: Entrada del Teléfono izquierdo y Botones (t=19.5 -> 21.5) (Entrada más pausada de 2s)
-      .to(".descargar-phone-container .phone-left-align", { opacity: 1, xPercent: -50, yPercent: 0, rotation: 0, duration: 2, ease: "power2.out" }, 19.5)
-      .to(".descargar-buttons-container", { opacity: 1, xPercent: 0, duration: 2, ease: "power2.out" }, 19.5)
-      .to(desc, { opacity: 0.15, duration: 1 }, 19.5)
+        // Fase 7: Entrada del Teléfono izquierdo y Botones (t=19.5 -> 21.5) (Entrada más pausada de 2s)
+        .to(".descargar-phone-container .phone-left-align", {
+            opacity: 1,
+            xPercent: -50,
+            yPercent: 0,
+            rotation: 0,
+            duration: 2,
+            ease: "power2.out"
+        }, 19.5)
+        .to(".descargar-buttons-container", {
+            opacity: 1,
+            xPercent: 0,
+            duration: 2,
+            ease: "power2.out"
+        }, 19.5)
+        .to(desc, {
+            opacity: 0.15,
+            duration: 1
+        }, 19.5)
 
-      // Fase 8: Pausa estática final, manteniendo visibles el teléfono y los botones (t=21.5 -> 24.0)
-      .to({}, { duration: 2.5 }, 21.5);
+        // Fase 8: Pausa estática final, manteniendo visibles el teléfono y los botones (t=21.5 -> 24.0)
+        .to({}, {
+            duration: 2.5
+        }, 21.5);
 }
 
 /* =========================================
@@ -471,23 +847,30 @@ function buildBirdTimeline() {
     // TODA la coreografía de los pájaros se define en bird-config.js (window.BIRD_CONFIG).
     // Cada pájaro tiene su propio camino independiente; NO hay órbita global del bando.
     const cfg = window.BIRD_CONFIG;
-    if (!cfg) { console.warn("BIRD_CONFIG no cargado (bird-config.js)"); return; }
+    if (!cfg) {
+        console.warn("BIRD_CONFIG no cargado (bird-config.js)");
+        return;
+    }
 
     // Convierte un keyframe {x,y,z,scale,wingsAmp,rotX,rotY} a las propiedades bN_* del proxy.
     const toProxy = (key, kf) => {
         const o = {};
-        if (kf.x !== undefined)        o[key + "_x"] = kf.x;
-        if (kf.y !== undefined)        o[key + "_y"] = kf.y;
-        if (kf.z !== undefined)        o[key + "_z"] = kf.z;
-        if (kf.scale !== undefined)    o[key + "_scale"] = kf.scale;
+        if (kf.x !== undefined) o[key + "_x"] = kf.x;
+        if (kf.y !== undefined) o[key + "_y"] = kf.y;
+        if (kf.z !== undefined) o[key + "_z"] = kf.z;
+        if (kf.scale !== undefined) o[key + "_scale"] = kf.scale;
         if (kf.wingsAmp !== undefined) o[key + "_wingsAmp"] = kf.wingsAmp;
-        if (kf.rotX !== undefined)     o[key + "_overrideRotX"] = kf.rotX;
-        if (kf.rotY !== undefined)     o[key + "_overrideRotY"] = kf.rotY;
+        if (kf.rotX !== undefined) o[key + "_overrideRotX"] = kf.rotX;
+        if (kf.rotY !== undefined) o[key + "_overrideRotY"] = kf.rotY;
         return o;
     };
 
     // Estado inicial: cada pájaro en su `start`. Sin órbita global (rotationY/X = 0).
-    const initial = { decompose: 0.0, rotationY: 0.0, rotationX: 0.0 };
+    const initial = {
+        decompose: 0.0,
+        rotationY: 0.0,
+        rotationX: 0.0
+    };
     Object.keys(cfg.birds).forEach(key => Object.assign(initial, toProxy(key, cfg.birds[key].start)));
     Object.assign(window.birdProxy, initial);
 
@@ -495,15 +878,18 @@ function buildBirdTimeline() {
         scrollTrigger: {
             id: "birdScrollTrigger",
             trigger: ".map-crear-animated-section",
-            start: "top center",        // a partir de ~la mitad del recorrido
+            start: "top center", // a partir de ~la mitad del recorrido
             endTrigger: ".eighth-section",
-            end: "bottom bottom",       // hasta el final de la octava sección unificada
+            end: "bottom bottom", // hasta el final de la octava sección unificada
             scrub: SCRUB
         }
     });
 
     // Aparece el contenedor 3D
-    tl.to("#birds-container", { opacity: 1, duration: cfg.container.fadeIn }, 0);
+    tl.to("#birds-container", {
+        opacity: 1,
+        duration: cfg.container.fadeIn
+    }, 0);
 
     // Camino INDEPENDIENTE de cada pájaro (cada tramo arranca en su `at`)
     Object.keys(cfg.birds).forEach(key => {
@@ -517,8 +903,16 @@ function buildBirdTimeline() {
     });
 
     // Descomposición en partículas + desvanecido del contenedor
-    tl.to(window.birdProxy, { decompose: 1.0, duration: cfg.decompose.duration, ease: cfg.decompose.ease || "power2.out" }, cfg.decompose.at)
-      .to("#birds-container", { opacity: 0, duration: cfg.container.fadeOut, ease: "power2.inOut" }, cfg.container.fadeOutAt);
+    tl.to(window.birdProxy, {
+            decompose: 1.0,
+            duration: cfg.decompose.duration,
+            ease: cfg.decompose.ease || "power2.out"
+        }, cfg.decompose.at)
+        .to("#birds-container", {
+            opacity: 0,
+            duration: cfg.container.fadeOut,
+            ease: "power2.inOut"
+        }, cfg.container.fadeOutAt);
 }
 
 /* =========================================
@@ -555,16 +949,24 @@ function setupAudio() {
     };
     window.addEventListener('pointerdown', startOnce);
     window.addEventListener('keydown', startOnce);
-    window.addEventListener('wheel', startOnce, { passive: true });
+    window.addEventListener('wheel', startOnce, {
+        passive: true
+    });
 
     // Botón: silenciar / reactivar
     toggle.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!started) { startOnce(); return; }
+        if (!started) {
+            startOnce();
+            return;
+        }
         enabled = !enabled;
         toggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
         if (enabled) playBoth();
-        else { birds.pause(); music.pause(); }
+        else {
+            birds.pause();
+            music.pause();
+        }
     });
 }
 
@@ -575,7 +977,10 @@ function buildMapParallax() {
     const mapContainer = document.querySelector('.animated-arch-container .arch-full-screen');
     if (!mapContainer) return;
 
-    let targetX = 0, targetY = 0, liveX = 0, liveY = 0;
+    let targetX = 0,
+        targetY = 0,
+        liveX = 0,
+        liveY = 0;
     const PARALLAX = 0.035;
     const LERP = 0.06;
 
@@ -608,10 +1013,10 @@ gsap.registerPlugin(ScrollTrigger);
 let mainCtx = null;
 
 let introBirdViewer = null;
-window.isIntroActive = false;  // Bandera para desactivar ratón durante intro
+window.isIntroActive = false; // Bandera para desactivar ratón durante intro
 
 function initIntroSequence() {
-    window.isIntroActive = true;  // Activar durante intro
+    window.isIntroActive = true; // Activar durante intro
 
     // 1. Inicializar el audio ambiente y música para que capte la primera interacción bubbled
     setupAudio();
@@ -619,15 +1024,8 @@ function initIntroSequence() {
     // 2. Estado inicial de birdProxy usando la configuración de intro separada
     Object.assign(window.birdProxy, window.introBirdConfig.initial);
 
-    // 2b. Posición inicial del título "Los Tres Tejedores" en el centro de la pantalla y un poco más pequeño (en la parte superior)
-    gsap.set(".fixed-bottom-title", {
-        x: 0, // Resetear el translateX en px que GSAP hereda del translateX(-50.85%) del CSS (calculado con la fuente gigante 12cqw) y que, sumado al xPercent, descentraba el título fuera de pantalla en responsive
-        xPercent: -50.85, // Mantener el centrado horizontal del CSS original
-        y: "-82vh", // Posicionado en la parte superior
-        yPercent: 0,
-        fontSize: "clamp(1.2rem, 3.5vw, 2.5rem)", // un poco más pequeño para la intro
-        zIndex: 100000 // por encima de la intro-screen
-    });
+    // 2b. #intro-title ya tiene su CSS propio (top: 1.25rem, position: absolute)
+    // GSAP lo anima cuando sale por arriba. No hay preposicionamiento necesario.
 
     // 3. Crear el visor 3D temporal en el contenedor de la intro
     introBirdViewer = new window.BirdViewer('#intro-birds-container');
@@ -638,43 +1036,54 @@ function initIntroSequence() {
 
     // Entrada escalonada de los 3 pájaros (staggered) - usando configuración separada
     introTl.to(window.birdProxy, {
-        decompose: 0.0,
-        b1_y: cfg.final.b1.y,
-        b1_z: cfg.final.b1.z,
-        b1_scale: cfg.final.b1.scale,
-        duration: cfg.timings.duration,
-        ease: "power2.out"
-    }, cfg.timings.b1_start)
-    .to(window.birdProxy, {
-        b2_y: cfg.final.b2.y,
-        b2_z: cfg.final.b2.z,
-        b2_scale: cfg.final.b2.scale,
-        duration: cfg.timings.duration,
-        ease: "power2.out"
-    }, cfg.timings.b2_start)
-    .to(window.birdProxy, {
-        b3_y: cfg.final.b3.y,
-        b3_z: cfg.final.b3.z,
-        b3_scale: cfg.final.b3.scale,
-        duration: cfg.timings.duration,
-        ease: "power2.out"
-    }, cfg.timings.b3_start)
-    .to("#btn-intro-enter", {
-        opacity: 1,
-        pointerEvents: "auto",
-        duration: 0.8
-    });
+            decompose: 0.0,
+            b1_x: cfg.final.b1.x,
+            b1_y: cfg.final.b1.y,
+            b1_z: cfg.final.b1.z,
+            b1_scale: cfg.final.b1.scale,
+            duration: cfg.timings.duration,
+            ease: "power2.out"
+        }, cfg.timings.b1_start)
+        .to(window.birdProxy, {
+            b2_x: cfg.final.b2.x,
+            b2_y: cfg.final.b2.y,
+            b2_z: cfg.final.b2.z,
+            b2_scale: cfg.final.b2.scale,
+            duration: cfg.timings.duration,
+            ease: "power2.out"
+        }, cfg.timings.b2_start)
+        .to(window.birdProxy, {
+            b3_x: cfg.final.b3.x,
+            b3_y: cfg.final.b3.y,
+            b3_z: cfg.final.b3.z,
+            b3_scale: cfg.final.b3.scale,
+            duration: cfg.timings.duration,
+            ease: "power2.out"
+        }, cfg.timings.b3_start)
+        .to("#btn-intro-enter", {
+            opacity: 1,
+            pointerEvents: "auto",
+            duration: 0.8
+        });
 
     // 5. Configurar el click en el botón ENTRAR
     const enterBtn = document.getElementById('btn-intro-enter');
     if (enterBtn) {
         enterBtn.addEventListener('click', () => {
+            // Animar el título de la intro hacia arriba
+            gsap.to("#intro-title", {
+                y: "-100vh",
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.in"
+            });
+
             // Animar el fondo a transparente
             gsap.to("#intro-screen", {
                 opacity: 0,
                 duration: 1.2,
                 onComplete: () => {
-                    window.isIntroActive = false;  // Desactivar bandera de intro
+                    window.isIntroActive = false; // Desactivar bandera de intro
                     // Limpiar recursos WebGL de la intro inmediatamente para evitar saturación de contexto GPU
                     if (introBirdViewer) {
                         introBirdViewer.destroy();
@@ -685,7 +1094,7 @@ function initIntroSequence() {
 
                     // Arrancar el resto del sitio
                     // El masterTimeline controla .fixed-bottom-title desde el inicio (línea ~139)
-                    // No lo animamos aquí para evitar conflicto de timelines
+                    // Sin conflictos: .fixed-bottom-title es un elemento separado del #intro-title
                     initAll();
                 }
             });
@@ -694,7 +1103,9 @@ function initIntroSequence() {
 }
 
 function initAll() {
-    ScrollTrigger.defaults({ scroller: SCROLLER });
+    ScrollTrigger.defaults({
+        scroller: SCROLLER
+    });
 
     setupSVGs();
 
@@ -723,11 +1134,16 @@ function initAll() {
 function initLoader() {
     const screen = document.getElementById('loader-screen');
     const counterEl = document.getElementById('loader-counter');
-    if (!screen || !counterEl) { initIntroSequence(); return; }
+    if (!screen || !counterEl) {
+        initIntroSequence();
+        return;
+    }
 
     let progress = 0;
     let loaded = document.readyState === 'complete';
-    if (!loaded) window.addEventListener('load', () => { loaded = true; });
+    if (!loaded) window.addEventListener('load', () => {
+        loaded = true;
+    });
 
     const finish = () => {
         counterEl.textContent = 100;
@@ -744,7 +1160,10 @@ function initLoader() {
         progress += (cap - progress) * 0.06; // acercamiento exponencial (rápido→lento)
         if (loaded && cap - progress < 0.5) progress = 100;
         counterEl.textContent = Math.round(progress);
-        if (progress >= 100) { finish(); return; }
+        if (progress >= 100) {
+            finish();
+            return;
+        }
         requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -795,12 +1214,12 @@ window.addEventListener('resize', () => {
     resizeTimer = setTimeout(() => {
         // Recalcular longitudes de SVGs y variables CSS como archCardWidth
         setupSVGs();
-        
+
         // Revertir y reconstruir los timelines de GSAP con las nuevas dimensiones
         if (mainCtx) {
             mainCtx.revert();
         }
-        
+
         mainCtx = gsap.context(() => {
             buildMountTriggers();
             buildMasterTimeline();
@@ -808,7 +1227,7 @@ window.addEventListener('resize', () => {
             buildBirdTimeline();
             buildEighthSectionTimeline();
         });
-        
+
         ScrollTrigger.refresh();
     }, 200);
 });
