@@ -26,6 +26,10 @@ window.TellusModelViewer = class TellusModelViewer {
         this.baseRotX = 0.3;
         this.baseRotY = 0.5;
 
+        // Rotación continua infinita
+        this.continuousRotationY = 0;
+        this.rotationSpeed = 0.3; // Radianes por frame (~0.3 rad/frame)
+
         this.init();
     }
 
@@ -183,6 +187,9 @@ window.TellusModelViewer = class TellusModelViewer {
 
         const proxy = window.tellusProxy;
         if (this.model && proxy) {
+            // Rotación continua infinita sobre el eje Y
+            this.continuousRotationY += this.rotationSpeed;
+
             // Rotación suavizada siguiendo el cursor (Lerp) con intensidad configurable
             const mouseFollowIntensity = proxy.t_mouseFollow || 1.0;
             const targetMouseRotX = this.mouseY * (Math.PI / 8) * mouseFollowIntensity;
@@ -192,9 +199,9 @@ window.TellusModelViewer = class TellusModelViewer {
             this.currentMouseRotX += (targetMouseRotX - this.currentMouseRotX) * 0.05;
             this.currentMouseRotY += (targetMouseRotY - this.currentMouseRotY) * 0.05;
 
-            // Aplicar rotación = base + rotación del ratón
+            // Aplicar rotación = base + rotación continua + rotación del ratón
             this.model.rotation.x = this.baseRotX + this.currentMouseRotX;
-            this.model.rotation.y = this.baseRotY + this.currentMouseRotY;
+            this.model.rotation.y = this.baseRotY + this.continuousRotationY + this.currentMouseRotY;
 
             // Aplicar dispersión física al scroll (similar al shader guide)
             const dispersalStrength = Math.pow(this.scrollProgress, 3.0) * 0.3;
