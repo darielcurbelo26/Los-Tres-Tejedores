@@ -406,6 +406,9 @@
 
                     <!-- Tercera Sección con arcos y textos de fondo -->
                     <section class="section third-section">
+                        <!-- Contenedor del modelo 3D Tellus -->
+                        <div id="tellus-model-container" class="tellus-model-container"></div>
+
                         <!-- Arcos superpuestos -->
                         <div class="arches-overlay">
                             <svg width="100%" height="100%" viewBox="0 0 1702 1101" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
@@ -731,10 +734,14 @@
     <!-- Three.js y dependencias -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
     <!-- Datos y lógica de los pájaros -->
     <script src="3DModel/Bird/birdData.js"></script>
     <script src="3DModel/Bird/BirdFlock.js?v=21"></script>
+
+    <!-- Visor del Modelo 3D Tellus -->
+    <script src="3DModel/TellusModelViewer.js"></script>
 
     <!-- GSAP y ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>

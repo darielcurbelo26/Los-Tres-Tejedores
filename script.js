@@ -1342,3 +1342,39 @@ function setupIntroPanelControls() {
 }
 
 window.addEventListener('load', setupIntroPanelControls);
+
+/* =========================================
+   INICIALIZACIÓN DEL MODELO 3D TELLUS
+   ========================================= */
+function initializeTellusModel() {
+    // Crear instancia del visor del modelo 3D
+    const tellusViewer = new window.TellusModelViewer('#tellus-model-container');
+
+    // Escuchar el movimiento del ratón
+    window.addEventListener('mousemove', (event) => {
+        const xNormalizado = (event.clientX / window.innerWidth) * 2 - 1;
+        const yNormalizado = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        tellusViewer.mouseX = xNormalizado;
+        tellusViewer.mouseY = yNormalizado;
+    });
+
+    // Crear animación de scroll usando GSAP ScrollTrigger
+    const proxyScroll = { progreso: 0 };
+
+    gsap.timeline({
+        scrollTrigger: {
+            trigger: ".third-section",  // Inicia en la tercera sección
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+            onUpdate: (self) => {
+                proxyScroll.progreso = self.progress;
+                tellusViewer.updateScroll(proxyScroll.progreso);
+            }
+        }
+    });
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initializeTellusModel);
