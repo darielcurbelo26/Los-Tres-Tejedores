@@ -1121,38 +1121,54 @@ body {
     animation: slideInRight 0.8s ease-out forwards;
 }
 
-/* Posiciones verticales para lado izquierdo */
+/* Posición superior lado izquierdo */
 .popup-asset.popup-left-top {
     top: 15%;
+    left: var(--padding-global);
     animation-delay: 0.2s;
 }
 
-.popup-asset.popup-left-middle {
-    top: 50%;
-    transform: translateY(-50%);
-    animation-delay: 0.4s;
-}
-
-.popup-asset.popup-left-bottom {
-    bottom: 15%;
+/* Posición inferior lado izquierdo - Iconos App alineados horizontalmente */
+.popup-asset.popup-left-bottom-icons {
+    position: absolute;
+    bottom: var(--padding-global);
+    left: var(--padding-global);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease-out forwards;
     animation-delay: 0.6s;
 }
 
-/* Posiciones verticales para lado derecho */
+.icon-app {
+    height: auto !important;
+    max-width: 150px !important;
+    width: 150px;
+}
+
+/* Posición superior lado derecho */
 .popup-asset.popup-right-top {
     top: 15%;
+    right: var(--padding-global);
     animation-delay: 0.2s;
 }
 
-.popup-asset.popup-right-middle {
-    top: 50%;
-    transform: translateY(-50%);
-    animation-delay: 0.4s;
+/* Posición inferior lado derecho - Navegación pegada al borde */
+.popup-asset.popup-right-bottom-nav {
+    position: absolute;
+    bottom: var(--padding-global);
+    right: var(--padding-global);
+    display: flex;
+    justify-content: flex-end;
+    opacity: 0;
+    animation: slideInRight 0.8s ease-out forwards;
+    animation-delay: 0.6s;
 }
 
-.popup-asset.popup-right-bottom {
-    bottom: 15%;
-    animation-delay: 0.6s;
+.nav-img {
+    height: auto !important;
+    width: auto;
 }
 
 .popup-img {
