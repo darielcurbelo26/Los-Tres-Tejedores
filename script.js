@@ -1231,3 +1231,96 @@ window.addEventListener('resize', () => {
         ScrollTrigger.refresh();
     }, 200);
 });
+
+/* =========================================
+   PANEL DE CONTROL DE DEBUG (Intro Aves)
+   ========================================= */
+function setupIntroPanelControls() {
+    const toggleBtn = document.getElementById('toggle-debug-panel');
+    const panel = document.getElementById('intro-debug-panel');
+    const codeOutput = document.getElementById('debug-code-output');
+    const copyBtn = document.getElementById('debug-copy-btn');
+
+    // Toggle panel visibility
+    toggleBtn.addEventListener('click', () => {
+        panel.classList.toggle('hidden');
+        toggleBtn.classList.toggle('is-open');
+    });
+
+    // Get all sliders
+    const sliders = document.querySelectorAll('.debug-slider-label input[type="range"]');
+
+    function updateCodeOutput() {
+        const values = {};
+        sliders.forEach(slider => {
+            const id = slider.id;
+            const value = parseFloat(slider.value);
+            values[id] = value;
+
+            // Update the value display
+            const valueSpan = slider.parentElement.querySelector('.debug-value');
+            if (valueSpan) {
+                valueSpan.textContent = value.toFixed(2);
+            }
+
+            // Update introBirdConfig
+            if (id.startsWith('b1_')) {
+                window.introBirdConfig.initial[id] = value;
+            } else if (id.startsWith('b2_')) {
+                window.introBirdConfig.initial[id] = value;
+            } else if (id.startsWith('b3_')) {
+                window.introBirdConfig.initial[id] = value;
+            }
+        });
+
+        // Generate copyable code
+        const code = `window.introBirdConfig.initial = {
+    b1_x: ${values.b1_x.toFixed(2)},
+    b1_y: ${values.b1_y.toFixed(2)},
+    b1_z: ${values.b1_z.toFixed(2)},
+    b1_scale: ${values.b1_scale.toFixed(2)},
+    b1_overrideRotX: 9999,
+    b1_overrideRotY: 9999,
+
+    b2_x: ${values.b2_x.toFixed(2)},
+    b2_y: ${values.b2_y.toFixed(2)},
+    b2_z: ${values.b2_z.toFixed(2)},
+    b2_scale: ${values.b2_scale.toFixed(2)},
+    b2_overrideRotX: 9999,
+    b2_overrideRotY: 9999,
+
+    b3_x: ${values.b3_x.toFixed(2)},
+    b3_y: ${values.b3_y.toFixed(2)},
+    b3_z: ${values.b3_z.toFixed(2)},
+    b3_scale: ${values.b3_scale.toFixed(2)},
+    b3_overrideRotX: 9999,
+    b3_overrideRotY: 9999,
+
+    decompose: 1.0,
+    rotationY: 0,
+    rotationX: 0
+};`;
+
+        codeOutput.value = code;
+    }
+
+    // Add event listeners to all sliders
+    sliders.forEach(slider => {
+        slider.addEventListener('input', updateCodeOutput);
+    });
+
+    // Copy button
+    copyBtn.addEventListener('click', () => {
+        codeOutput.select();
+        document.execCommand('copy');
+        copyBtn.textContent = '✓ Copiado';
+        setTimeout(() => {
+            copyBtn.textContent = 'Copiar';
+        }, 2000);
+    });
+
+    // Initial code output
+    updateCodeOutput();
+}
+
+window.addEventListener('load', setupIntroPanelControls);
