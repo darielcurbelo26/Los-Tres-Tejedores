@@ -567,13 +567,31 @@ function initIntroSequence() {
 
     // 2. Estado inicial de birdProxy exclusivo para la intro
     Object.assign(window.birdProxy, {
+        // Pájaro 1 (Centro)
         b1_x: 0,
-        b1_y: -600, // abajo fuera
-        b1_z: -200, // lejos
-        b1_scale: 0.2, // pequeño
-        b2_scale: 0.0, // oculto
-        b3_scale: 0.0, // oculto
-        decompose: 1.0, // completamente descompuesto en partículas
+        b1_y: -600,
+        b1_z: -200,
+        b1_scale: 0.2,
+        b1_overrideRotX: 9999,
+        b1_overrideRotY: 9999,
+
+        // Pájaro 2 (Izquierdo)
+        b2_x: -500,
+        b2_y: -600,
+        b2_z: -200,
+        b2_scale: 0.0,
+        b2_overrideRotX: 9999,
+        b2_overrideRotY: 9999,
+
+        // Pájaro 3 (Derecho)
+        b3_x: 500,
+        b3_y: -600,
+        b3_z: -200,
+        b3_scale: 0.0,
+        b3_overrideRotX: 9999,
+        b3_overrideRotY: 9999,
+
+        decompose: 1.0,
         rotationY: 0,
         rotationX: 0
     });
@@ -593,14 +611,30 @@ function initIntroSequence() {
 
     // 4. Crear el timeline GSAP para ensamblar la figura
     const introTl = gsap.timeline();
+
+    // Entrada escalonada de los 3 pájaros (staggered)
     introTl.to(window.birdProxy, {
         decompose: 0.0,
-        b1_y: -120, // posición final
+        b1_y: 0,
         b1_z: 0,
         b1_scale: 0.85,
         duration: 4.5,
         ease: "power2.out"
-    })
+    }, 0)  // Pájaro 1 empieza en t=0
+    .to(window.birdProxy, {
+        b2_y: 0,
+        b2_z: 0,
+        b2_scale: 0.55,
+        duration: 4.5,
+        ease: "power2.out"
+    }, 0.5)  // Pájaro 2 empieza en t=0.5s (stagger)
+    .to(window.birdProxy, {
+        b3_y: 0,
+        b3_z: 0,
+        b3_scale: 0.65,
+        duration: 4.5,
+        ease: "power2.out"
+    }, 1.0)  // Pájaro 3 empieza en t=1.0s (stagger)
     .to("#btn-intro-enter", {
         opacity: 1,
         pointerEvents: "auto",
