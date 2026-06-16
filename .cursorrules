@@ -1,0 +1,20 @@
+# The Seasons Typography Rule
+
+Siempre que se use la fuente "the-seasons" (`var(--font-seasons)`), se debe aplicar el siguiente estilo obligatoriamente:
+- Bold (`font-weight: 700;`)
+- Italic (`font-style: italic;`)
+- Capitalize (`text-transform: capitalize;`): para que la letra inicial sea mayúscula y el resto minúsculas.
+
+**Ejemplo CSS:**
+```css
+.example-class {
+    font-family: var(--font-seasons);
+    font-weight: 700;
+    font-style: italic;
+    text-transform: capitalize;
+}
+```
+
+# Privacy Rule
+
+Nunca grabes las pantallas del ordenador.
