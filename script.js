@@ -1263,12 +1263,11 @@ function setupIntroPanelControls() {
                 valueSpan.textContent = value.toFixed(2);
             }
 
-            // Update introBirdConfig
-            if (id.startsWith('b1_')) {
-                window.introBirdConfig.initial[id] = value;
-            } else if (id.startsWith('b2_')) {
-                window.introBirdConfig.initial[id] = value;
-            } else if (id.startsWith('b3_')) {
+            // Update window.birdProxy for REAL-TIME changes (lo que ven los pájaros ahora)
+            window.birdProxy[id] = value;
+
+            // Also update introBirdConfig.initial for next intro reset
+            if (id.startsWith('b1_') || id.startsWith('b2_') || id.startsWith('b3_')) {
                 window.introBirdConfig.initial[id] = value;
             }
         });
