@@ -1341,10 +1341,12 @@ function initializeTellusModel() {
     });
 }
 
+// Paneles de control removidos (Ver CONTROL_PANELS_GUIDE.md para documentación)
+
 /* =========================================
-   PANEL DE CONTROLES PARA MODELO TELLUS
+   INICIALIZACIÓN REMOVIDA
    ========================================= */
-function initializeTellusControlPanel() {
+function initializeTellusControlPanel_REMOVED() {
     const panel = document.getElementById('tellus-controls-panel');
     const toggleBtn = document.getElementById('toggle-controls');
     const resetBtn = document.getElementById('reset-controls');
@@ -1672,6 +1674,5 @@ function updateBirdProxyFromIntroConfig() {
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     initializeTellusModel();
-    initializeTellusControlPanel();
-    initializeIntroBirdsControlPanel();
+    // Paneles de control removidos - Ver CONTROL_PANELS_GUIDE.md
 });
